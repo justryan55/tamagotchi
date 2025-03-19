@@ -1,11 +1,14 @@
 import { useState } from "react";
 import weatherIcons from "@/content/weatherIcons";
+import Image from "next/image";
 
 export default function WeatherData() {
   const [weather, setWeather] = useState<React.ReactNode>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const apiKey = process.env.WEATHER_API_KEY;
 
   if (!navigator.geolocation) return;
-  const apiKey = process.env.WEATHER_API_KEY;
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
@@ -17,7 +20,7 @@ export default function WeatherData() {
     }
   );
 
-  const fetchWeather = async (lat, lon) => {
+  const fetchWeather = async (lat: number, lon: number) => {
     try {
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
@@ -36,10 +39,25 @@ export default function WeatherData() {
       if (weather.main === "Rain") {
         setWeather(weatherIcons.rain);
       }
+
+      setIsLoading(false);
     } catch {
       console.log("Unable to fetch the weather");
     }
   };
 
-  return <div>{weather}</div>;
+  return (
+    <div>
+      {isLoading ? (
+        <Image
+          src="/images/spinner.svg"
+          width={40}
+          height={40}
+          alt="loading-spinner"
+        />
+      ) : (
+        weather
+      )}
+    </div>
+  );
 }
