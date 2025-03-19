@@ -1,0 +1,14 @@
+.container {
+  position: fixed;
+  top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  z-index: 1;
+}
+
+.item {
+  cursor: pointer;
+}
