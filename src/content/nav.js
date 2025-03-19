@@ -1,3 +1,5 @@
+import WeatherData from "@/components/WeatherData";
+
 export const NavItems = [
   {
     id: 1,
@@ -11,6 +13,7 @@ export const NavItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#dc8add"
+        aria-label="Feed"
       >
         <path
           d="M14 9.01L14.01 8.99889"
@@ -59,6 +62,7 @@ export const NavItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#99c1f1"
+        aria-label="Clean"
       >
         <path
           d="M22 5L20.0455 17.3135C19.8913 18.2849 19.0538 19 18.0702 19H5.92981C4.94628 19 4.10872 18.2849 3.95454 17.3135L2 5"
@@ -89,6 +93,7 @@ export const NavItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#77767b"
+        aria-label="Walk"
       >
         <path
           d="M3.68478 18.7826L11.5642 4.77473C11.7554 4.43491 12.2446 4.43491 12.4358 4.77473L20.3152 18.7826C20.5454 19.1918 20.1357 19.6639 19.6982 19.4937L12.1812 16.5705C12.0647 16.5251 11.9353 16.5251 11.8188 16.5705L4.30179 19.4937C3.86426 19.6639 3.45463 19.1918 3.68478 18.7826Z"
@@ -112,6 +117,7 @@ export const NavItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#f66151"
+        aria-label="Care"
       >
         <path
           d="M18 20L21.8243 16.1757C21.9368 16.0632 22 15.9106 22 15.7515V10.5C22 9.67157 21.3284 9 20.5 9V9C19.6716 9 19 9.67157 19 10.5V15"
@@ -163,6 +169,7 @@ export const NavItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#ffbe6f"
+        aria-label="Sleep"
       >
         <path
           d="M21 4V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2H19C20.1046 2 21 2.89543 21 4Z"
@@ -190,161 +197,6 @@ export const NavItems = [
   },
 ];
 
-const WeatherItems = [
-  {
-    id: 3,
-    text: "Sunny",
-    svg: (
-      <svg
-        width="40px"
-        height="40px"
-        strokeWidth="1.5"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        color="#f9f06b"
-      >
-        <path
-          d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18Z"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M22 12L23 12"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M12 2V1"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M12 23V22"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M20 20L19 19"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M20 4L19 5"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M4 20L5 19"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M4 4L5 5"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-        <path
-          d="M1 12L2 12"
-          stroke="#f9f06b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-      </svg>
-    ),
-  },
-  // {
-  //   id: 2,
-  //   text: "Rainy",
-  //   svg: (
-  //     <svg
-  //       width="40px"
-  //       height="40px"
-  //       strokeWidth="1.5"
-  //       viewBox="0 0 24 24"
-  //       fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       color="#99c1f1"
-  //     >
-  //       <path
-  //         d="M12 14V16"
-  //         stroke="#99c1f1"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M12 20V22"
-  //         stroke="#99c1f1"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M8 18V20"
-  //         stroke="#99c1f1"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M16 18V20"
-  //         stroke="#99c1f1"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M20 17.6073C21.4937 17.0221 23 15.6889 23 13C23 9 19.6667 8 18 8C18 6 18 2 12 2C6 2 6 6 6 8C4.33333 8 1 9 1 13C1 15.6889 2.50628 17.0221 4 17.6073"
-  //         stroke="#99c1f1"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //     </svg>
-  //   ),
-  // },
-  // {
-  //   id: 3,
-  //   text: "Cloudy",
-  //   svg: (
-  //     <svg
-  //       width="40px"
-  //       height="40px"
-  //       strokeWidth="1.5"
-  //       viewBox="0 0 24 24"
-  //       fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       color="#c0bfbc"
-  //     >
-  //       <path
-  //         d="M12 4C6 4 6 8 6 10C4.33333 10 1 11 1 15C1 19 4.33333 20 6 20H18C19.6667 20 23 19 23 15C23 11 19.6667 10 18 10C18 8 18 4 12 4Z"
-  //         stroke="#c0bfbc"
-  //         strokeWidth="1.5"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //     </svg>
-  //   ),
-  // },
-];
-
 export const HeaderItems = [
   {
     id: 1,
@@ -358,6 +210,7 @@ export const HeaderItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#8ff0a4"
+        aria-label="Stats"
       >
         <path
           d="M19 3L5 3C3.89543 3 3 3.89543 3 5L3 19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
@@ -390,9 +243,13 @@ export const HeaderItems = [
       </svg>
     ),
   },
-  ...WeatherItems,
   {
     id: 2,
+    text: "Weather",
+    svg: <WeatherData />,
+  },
+  {
+    id: 3,
     text: "Settings",
     svg: (
       <svg
@@ -403,6 +260,7 @@ export const HeaderItems = [
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         color="#9a9996"
+        aria-label="Settings"
       >
         <path
           d="M10.0503 10.6066L2.97923 17.6777C2.19818 18.4587 2.19818 19.725 2.97923 20.5061V20.5061C3.76027 21.2871 5.0266 21.2871 5.80765 20.5061L12.8787 13.435"
