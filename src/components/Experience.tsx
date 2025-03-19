@@ -17,9 +17,6 @@ function Dog({ animation }) {
   dog.scene.position.y = -0.5;
 
   const animations = useAnimations(dog.animations, dog.scene);
-  // const { animationName } = useControls({
-  //   animationName: { options: animations.names },
-  // });
 
   useEffect(() => {
     const action = animations.actions[animation];
