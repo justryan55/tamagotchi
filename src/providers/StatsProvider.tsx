@@ -1,8 +1,13 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 
 interface Stats {
+  xp: {
+    id: number;
+    title: string;
+    value: number;
+  };
   happiness: {
     id: number;
     title: string;
@@ -30,7 +35,17 @@ interface Stats {
   };
 }
 
+interface StatsContextType {
+  stats: Stats;
+  setStats: React.Dispatch<React.SetStateAction<Stats>>;
+}
+
 const defaultStats: Stats = {
+  xp: {
+    id: 0,
+    title: "XP",
+    value: 0,
+  },
   happiness: {
     id: 1,
     title: "Happiness",
@@ -58,11 +73,13 @@ const defaultStats: Stats = {
   },
 };
 
-const StatsContext = createContext<Stats>(defaultStats);
+const StatsContext = createContext<StatsContextType | undefined>(undefined);
 
 export const StatsProvider = ({ children }: { children: React.ReactNode }) => {
+  const [stats, setStats] = useState(defaultStats);
+
   return (
-    <StatsContext.Provider value={defaultStats}>
+    <StatsContext.Provider value={{ stats, setStats }}>
       {children}
     </StatsContext.Provider>
   );
