@@ -19,7 +19,8 @@
   font-size: 1.15rem;
 }
 
-.bar {
+.bar,
+.xp-bar {
   background-color: #353b48;
   display: block;
   height: 20px;
@@ -30,13 +31,25 @@
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.bar > span {
+.bar > span,
+.xp-bar > span {
   height: 20px;
   float: left;
+}
+
+.bar > span {
   background: linear-gradient(
     135deg,
     rgba(236, 0, 140, 1) 0%,
     rgba(252, 103, 103, 1) 100%
+  );
+}
+
+.xp-bar > span {
+  background: linear-gradient(
+    135deg,
+    rgb(0, 130, 236) 0%,
+    rgb(103, 168, 252) 100%
   );
 }
 
