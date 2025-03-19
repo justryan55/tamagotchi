@@ -73,7 +73,10 @@ const defaultStats: Stats = {
   },
 };
 
-const StatsContext = createContext<StatsContextType | undefined>(undefined);
+const StatsContext = createContext<StatsContextType>({
+  stats: defaultStats,
+  setStats: () => {},
+});
 
 export const StatsProvider = ({ children }: { children: React.ReactNode }) => {
   const [stats, setStats] = useState(defaultStats);
