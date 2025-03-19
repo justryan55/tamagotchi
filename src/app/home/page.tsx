@@ -1,6 +1,6 @@
 "use client";
 
-import Animations from "@/components/Animations";
+import AnimationList from "@/components/AnimationList";
 import DepleteStats from "@/components/DepleteStats";
 import Experience from "@/components/Experience";
 import Nav from "@/components/Nav";
@@ -31,7 +31,7 @@ export default function Page() {
     <>
       <DepleteStats />
       <Stats toggleStats={toggleStats} />
-      {toggleAnimations && <Animations toggleAnimation={toggleAnimation} />}
+      {toggleAnimations && <AnimationList toggleAnimation={toggleAnimation} />}
       <div className={styles.canvas}>
         <Experience animation={animation} />
       </div>
