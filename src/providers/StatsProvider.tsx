@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface Stats {
   xp: {
@@ -78,8 +78,17 @@ const StatsContext = createContext<StatsContextType>({
   setStats: () => {},
 });
 
+const getInitialState = () => {
+  const stats = localStorage.getItem("stats");
+  return stats ? JSON.parse(stats) : defaultStats;
+};
+
 export const StatsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [stats, setStats] = useState(defaultStats);
+  const [stats, setStats] = useState(getInitialState);
+
+  useEffect(() => {
+    localStorage.setItem("stats", JSON.stringify(stats));
+  }, [stats]);
 
   return (
     <StatsContext.Provider value={{ stats, setStats }}>
