@@ -1,8 +1,10 @@
 import { useStats } from "@/providers/StatsProvider";
+import { useUser } from "@/providers/UserProvider";
 import { useEffect, useState } from "react";
 
 export default function DepleteStats() {
   const { stats, setStats } = useStats();
+  const { user, setUser } = useUser();
   const [time, setTime] = useState<number>(Date.now());
 
   const getIntervalTime = () => {
@@ -53,6 +55,50 @@ export default function DepleteStats() {
       clearInterval(interval);
     };
   }, []);
+
+  const useMountEffect = () => {
+    useEffect(() => {
+      const elapsedTime = (Date.now() - user.lastLogonTime) / 1000 / 60;
+      const depletionRate = elapsedTime / 2;
+
+      setUser((prevUser) => {
+        return {
+          ...prevUser,
+          lastLogonTime: Date.now(),
+        };
+      });
+
+      setStats((prevStats) => {
+        return {
+          ...prevStats,
+          hunger: {
+            ...prevStats.hunger,
+            value: prevStats.hunger.value - depletionRate,
+          },
+          happiness: {
+            ...prevStats.happiness,
+            value: prevStats.happiness.value - depletionRate,
+          },
+          health: {
+            ...prevStats.health,
+            value: prevStats.health.value - depletionRate,
+          },
+          energy: {
+            ...prevStats.energy,
+            value: prevStats.energy.value - depletionRate,
+          },
+          hygiene: {
+            ...prevStats.hygiene,
+            value: prevStats.hygiene.value - depletionRate,
+          },
+        };
+      });
+    }, []);
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+
+  useMountEffect();
 
   return null;
 }
