@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { StrictMode } from "react";
 import { StatsProvider } from "@/providers/StatsProvider";
+import { UserProvider } from "@/providers/UserProvider";
 
 export const metadata: Metadata = {
   title: "Tamagotchi",
@@ -15,11 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StatsProvider>
-        <body>
-          <StrictMode>{children}</StrictMode>
-        </body>
-      </StatsProvider>
+      <UserProvider>
+        <StatsProvider>
+          <body>
+            <StrictMode>{children}</StrictMode>
+          </body>
+        </StatsProvider>
+      </UserProvider>
     </html>
   );
 }
