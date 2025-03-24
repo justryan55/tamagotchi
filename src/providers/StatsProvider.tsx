@@ -32,6 +32,7 @@ interface Stats {
     id: number;
     title: string;
     value: number;
+    pooPosition: number[][];
   };
 }
 
@@ -70,6 +71,7 @@ const defaultStats: Stats = {
     id: 5,
     title: "Hygiene",
     value: 100,
+    pooPosition: [],
   },
 };
 
