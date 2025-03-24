@@ -1,15 +1,17 @@
 "use client";
 
-import { OrbitControls, useAnimations } from "@react-three/drei";
+import { useStats } from "@/providers/StatsProvider";
+import { Clone, OrbitControls, Text, useAnimations } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 interface ExperienceProps {
   animation: string;
+  spawnPoo: boolean;
 }
 
 function Dog({ animation }) {
@@ -30,6 +32,16 @@ function Dog({ animation }) {
   return (
     <>
       <primitive object={dog.scene} />
+    </>
+  );
+}
+
+function Poo({ position }) {
+  const poo = useLoader(GLTFLoader, "/models/poo.glb");
+
+  return (
+    <>
+      <Clone object={poo.scene} scale={[0.1, 0.1, 0.1]} position={position} />;
     </>
   );
 }
@@ -55,10 +67,41 @@ function Floor() {
   );
 }
 
-export default function Experience({ animation }: ExperienceProps) {
+function Bin() {
+  const bin = useLoader(GLTFLoader, "/models/bin.glb");
+
+  return (
+    <primitive
+      object={bin.scene}
+      scale={[0.75, 0.75, 0.75]}
+      position={[-0.5, -0.25, -1.25]}
+    />
+  );
+}
+
+export default function Experience({ animation, spawnPoo }: ExperienceProps) {
   const { perfVisible } = useControls({
     perfVisible: false,
   });
+  const { stats, setStats } = useStats();
+
+  console.log(spawnPoo);
+
+  useEffect(() => {
+    const pooPosition = [Math.random(), -0.42, Math.random()];
+
+    if (spawnPoo) {
+      setStats((prevStats) => {
+        return {
+          ...prevStats,
+          hygiene: {
+            ...prevStats.hygiene,
+            pooPosition: [...prevStats.hygiene.pooPosition, pooPosition],
+          },
+        };
+      });
+    }
+  }, [setStats, spawnPoo]);
 
   return (
     <>
@@ -70,6 +113,10 @@ export default function Experience({ animation }: ExperienceProps) {
         <ambientLight intensity={2} />
         <Dog animation={animation} />
         <Floor />
+        <Bin />
+        {stats.hygiene.pooPosition.map((p, i) => (
+          <Poo key={i} position={p} />
+        ))}
       </Canvas>
     </>
   );
