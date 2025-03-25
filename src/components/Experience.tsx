@@ -5,20 +5,23 @@ import {
   Clone,
   DragControls,
   OrbitControls,
-  Text,
   useAnimations,
 } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface ExperienceProps {
   animation: string;
   spawnPoo: boolean;
+  spawnFood: boolean;
+  setSpawnFood: (state: boolean) => void;
 }
 
 interface DogProps {
@@ -28,6 +31,12 @@ interface DogProps {
 interface PooProps {
   position: [number, number, number];
 }
+
+interface FoodProps {
+  setSpawnFood: (state: boolean) => void;
+}
+
+gsap.registerPlugin(useGSAP);
 
 function Dog({ animation }: DogProps) {
   const dog = useLoader(GLTFLoader, "/models/dog.glb");
@@ -55,6 +64,7 @@ function Poo({ position }: PooProps) {
   const poo = useLoader(GLTFLoader, "/models/poo.glb");
   const { stats, setStats } = useStats();
   const pooRef = useRef<THREE.Group | null>(null);
+  const difference = 2;
 
   const handleDragEnd = () => {
     if (!pooRef.current) return;
@@ -71,12 +81,15 @@ function Poo({ position }: PooProps) {
       setStats((prevStats) => {
         const updatedPooPosition = prevStats.hygiene.pooPosition.filter(
           (position) =>
-            position[0] !== worldPosition.x &&
-            position[1] !== worldPosition.y &&
-            position[2] !== worldPosition.z
+            !(
+              Math.abs(position[0] - worldPosition.x) < difference &&
+              Math.abs(position[2] - worldPosition.z) < difference
+            )
         );
 
         console.log(updatedPooPosition);
+        console.log("WOrld", worldPosition);
+
         console.log(...prevStats.hygiene.pooPosition);
         return {
           ...prevStats,
@@ -146,7 +159,42 @@ function Bin() {
   );
 }
 
-export default function Experience({ animation, spawnPoo }: ExperienceProps) {
+function Food({ setSpawnFood }: FoodProps) {
+  const food = useLoader(GLTFLoader, "/models/food.glb");
+  const foodRef = useRef<THREE.Group | null>(null);
+  useGSAP(() => {
+    if (foodRef.current) {
+      gsap.fromTo(
+        foodRef.current?.position,
+        { x: -5 },
+        {
+          x: -0.25,
+          duration: 2,
+          ease: "power3.out",
+          onComplete: () => {
+            setSpawnFood(false);
+          },
+        }
+      );
+    }
+  }, []);
+  return (
+    <primitive
+      object={food.scene}
+      scale={[0.1, 0.1, 0.1]}
+      position={[-0.25, -0.4, 1]}
+      rotation={[-Math.PI * 0.5, 0, 0]}
+      ref={foodRef}
+    />
+  );
+}
+
+export default function Experience({
+  animation,
+  spawnPoo,
+  spawnFood,
+  setSpawnFood,
+}: ExperienceProps) {
   const { perfVisible } = useControls({
     perfVisible: false,
   });
@@ -178,9 +226,10 @@ export default function Experience({ animation, spawnPoo }: ExperienceProps) {
         <ambientLight intensity={2} />
         <Dog animation={animation} />
         <Floor />
+        {spawnFood && <Food setSpawnFood={setSpawnFood} />}
         <Bin />
         {stats.hygiene.pooPosition.map((p, i) => (
-          <Poo key={i} position={p} />
+          <Poo key={i} position={p as [number, number, number]} />
         ))}
       </Canvas>
     </>

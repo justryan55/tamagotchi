@@ -1,8 +1,8 @@
 import { useStats } from "@/providers/StatsProvider";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface CheckStatsProp {
-  setSpawnPoo: (state: bollean) => void;
+  setSpawnPoo: (state: boolean) => void;
 }
 export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
   const { stats, setStats } = useStats();

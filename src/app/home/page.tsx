@@ -14,6 +14,7 @@ export default function Page() {
   const [toggleAnimations, setToggleAnimations] = useState(false);
   const [animation, setAnimation] = useState("standing");
   const [spawnPoo, setSpawnPoo] = useState(false);
+  const [spawnFood, setSpawnFood] = useState(false);
 
   const toggleStatsClass = () => {
     setToggleStats((prev) => !prev);
@@ -29,6 +30,11 @@ export default function Page() {
     setAnimation(animation);
   };
 
+  const toggleFood = () => {
+    setSpawnFood(true);
+    // setSpawnFood((prev) => !prev);
+  };
+
   return (
     <>
       <CheckStats setSpawnPoo={setSpawnPoo} />
@@ -36,11 +42,17 @@ export default function Page() {
       <Stats toggleStats={toggleStats} />
       {toggleAnimations && <AnimationList toggleAnimation={toggleAnimation} />}
       <div className={styles.canvas}>
-        <Experience animation={animation} spawnPoo={spawnPoo} />
+        <Experience
+          animation={animation}
+          spawnPoo={spawnPoo}
+          spawnFood={spawnFood}
+          setSpawnFood={setSpawnFood}
+        />
       </div>
       <Nav
         toggleStatsClass={toggleStatsClass}
         toggleAnimationsClass={toggleAnimationsClass}
+        toggleFood={toggleFood}
       />
     </>
   );
