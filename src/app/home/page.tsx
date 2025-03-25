@@ -15,8 +15,11 @@ export default function Page() {
   const [animation, setAnimation] = useState("standing");
   const [spawnPoo, setSpawnPoo] = useState(false);
   const [spawnFood, setSpawnFood] = useState(false);
-  const [directionalLight, setDirectionalLight] = useState(5);
-  const [ambientLight, setAmbientLight] = useState(1.5);
+  const [lightSettings, setLightSettings] = useState({
+    lightOn: true,
+    directional: 5,
+    ambient: 1.5,
+  });
 
   const toggleStatsClass = () => {
     setToggleStats((prev) => !prev);
@@ -33,12 +36,18 @@ export default function Page() {
   };
 
   const toggleFood = () => {
-    setSpawnFood(true);
+    if (lightSettings.lightOn) {
+      setSpawnFood(true);
+    }
   };
 
   const toggleLight = () => {
-    setDirectionalLight((prev) => (prev === 5 ? 0 : 5));
-    setAmbientLight((prev) => (prev === 1.5 ? 0 : 1.5));
+    setLightSettings((prev) => ({
+      ...prev,
+      lightOn: !prev.lightOn,
+      directional: prev.directional === 5 ? 0 : 5,
+      ambient: prev.ambient === 1.5 ? 0 : 1.5,
+    }));
   };
 
   return (
@@ -53,8 +62,7 @@ export default function Page() {
           spawnPoo={spawnPoo}
           spawnFood={spawnFood}
           setSpawnFood={setSpawnFood}
-          directionalLight={directionalLight}
-          ambientLight={ambientLight}
+          lightSettings={lightSettings}
         />
       </div>
       <Nav
