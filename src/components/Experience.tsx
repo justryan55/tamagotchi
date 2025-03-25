@@ -1,20 +1,35 @@
 "use client";
 
 import { useStats } from "@/providers/StatsProvider";
-import { Clone, OrbitControls, Text, useAnimations } from "@react-three/drei";
+import {
+  Clone,
+  DragControls,
+  OrbitControls,
+  Text,
+  useAnimations,
+} from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "three";
 
 interface ExperienceProps {
   animation: string;
   spawnPoo: boolean;
 }
 
-function Dog({ animation }) {
+interface DogProps {
+  animation: string;
+}
+
+interface PooProps {
+  position: [number, number, number];
+}
+
+function Dog({ animation }: DogProps) {
   const dog = useLoader(GLTFLoader, "/models/dog.glb");
   dog.scene.position.y = -0.5;
 
@@ -36,13 +51,62 @@ function Dog({ animation }) {
   );
 }
 
-function Poo({ position }) {
+function Poo({ position }: PooProps) {
   const poo = useLoader(GLTFLoader, "/models/poo.glb");
+  const { stats, setStats } = useStats();
+  const pooRef = useRef<THREE.Group | null>(null);
+
+  const handleDragEnd = () => {
+    if (!pooRef.current) return;
+
+    const worldPosition = new THREE.Vector3();
+    pooRef.current.getWorldPosition(worldPosition);
+
+    if (
+      worldPosition.x > -1.5 &&
+      worldPosition.x < -0.8 &&
+      worldPosition.z > -1.25 &&
+      worldPosition.z < -0.75
+    ) {
+      setStats((prevStats) => {
+        const updatedPooPosition = prevStats.hygiene.pooPosition.filter(
+          (position) =>
+            position[0] !== worldPosition.x &&
+            position[1] !== worldPosition.y &&
+            position[2] !== worldPosition.z
+        );
+
+        console.log(updatedPooPosition);
+        console.log(...prevStats.hygiene.pooPosition);
+        return {
+          ...prevStats,
+          hygiene: {
+            ...prevStats.hygiene,
+            pooPosition: updatedPooPosition,
+          },
+        };
+      });
+    }
+  };
 
   return (
-    <>
-      <Clone object={poo.scene} scale={[0.1, 0.1, 0.1]} position={position} />;
-    </>
+    <DragControls
+      autoTransform={true}
+      axisLock="y"
+      dragLimits={[
+        [-1.5, 0.5],
+        [0, 0],
+        [-2, 1],
+      ]}
+      onDragEnd={handleDragEnd}
+    >
+      <Clone
+        object={poo.scene}
+        scale={[0.1, 0.1, 0.1]}
+        position={position}
+        ref={pooRef}
+      />
+    </DragControls>
   );
 }
 
@@ -55,7 +119,7 @@ function Floor() {
 
   return (
     <mesh rotation={[-Math.PI * 0.5, 0, 0]} position={[0, -0.5, 0]}>
-      <planeGeometry args={[3, 3]} />
+      <planeGeometry args={[3.5, 3.5]} />
       <meshStandardMaterial
         map={colourMap}
         normalMap={normalMap}
@@ -75,6 +139,9 @@ function Bin() {
       object={bin.scene}
       scale={[0.75, 0.75, 0.75]}
       position={[-0.5, -0.25, -1.25]}
+      onPointerOver={() => {
+        // console.log("Test");
+      }}
     />
   );
 }
@@ -84,8 +151,6 @@ export default function Experience({ animation, spawnPoo }: ExperienceProps) {
     perfVisible: false,
   });
   const { stats, setStats } = useStats();
-
-  console.log(spawnPoo);
 
   useEffect(() => {
     const pooPosition = [Math.random(), -0.42, Math.random()];
@@ -106,9 +171,9 @@ export default function Experience({ animation, spawnPoo }: ExperienceProps) {
   return (
     <>
       <Leva hidden />
-      <Canvas camera={{ position: [0, 0, 2] }}>
+      <Canvas camera={{ position: [0, 0.75, 2.75] }}>
         {perfVisible && <Perf position="top-left" />}
-        <OrbitControls />
+        {/* <OrbitControls /> */}
         <directionalLight intensity={5} />
         <ambientLight intensity={2} />
         <Dog animation={animation} />
