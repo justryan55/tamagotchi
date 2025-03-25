@@ -37,6 +37,7 @@ export default function Page() {
 
   const toggleFood = () => {
     if (lightSettings.lightOn) {
+      setAnimation("sitting");
       setSpawnFood(true);
     }
   };
@@ -59,6 +60,7 @@ export default function Page() {
       <div className={styles.canvas}>
         <Experience
           animation={animation}
+          setAnimation={setAnimation}
           spawnPoo={spawnPoo}
           spawnFood={spawnFood}
           setSpawnFood={setSpawnFood}

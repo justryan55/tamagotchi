@@ -19,6 +19,7 @@ import { useGSAP } from "@gsap/react";
 
 interface ExperienceProps {
   animation: string;
+  setAnimation: (state: string) => void;
   spawnPoo: boolean;
   spawnFood: boolean;
   setSpawnFood: (state: boolean) => void;
@@ -39,6 +40,7 @@ interface PooProps {
 
 interface FoodProps {
   setSpawnFood: (state: boolean) => void;
+  setAnimation: (state: string) => void;
 }
 
 gsap.registerPlugin(useGSAP);
@@ -164,7 +166,7 @@ function Bin() {
   );
 }
 
-function Food({ setSpawnFood }: FoodProps) {
+function Food({ setSpawnFood, setAnimation }: FoodProps) {
   const food = useLoader(GLTFLoader, "/models/food.glb");
   const foodRef = useRef<THREE.Group | null>(null);
   useGSAP(() => {
@@ -178,6 +180,7 @@ function Food({ setSpawnFood }: FoodProps) {
           ease: "power3.out",
           onComplete: () => {
             setSpawnFood(false);
+            setAnimation("standing");
           },
         }
       );
@@ -196,6 +199,7 @@ function Food({ setSpawnFood }: FoodProps) {
 
 export default function Experience({
   animation,
+  setAnimation,
   spawnPoo,
   spawnFood,
   setSpawnFood,
@@ -205,7 +209,7 @@ export default function Experience({
     perfVisible: false,
   });
   const { stats, setStats } = useStats();
-  console.log(lightSettings);
+
   useEffect(() => {
     const pooPosition = [Math.random(), -0.42, Math.random()];
 
@@ -234,7 +238,9 @@ export default function Experience({
         <ambientLight intensity={lightSettings.ambient} />
         <Dog animation={animation} />
         <Floor />
-        {spawnFood && <Food setSpawnFood={setSpawnFood} />}
+        {spawnFood && (
+          <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
+        )}
         <Bin />
         {stats.hygiene.pooPosition.map((p, i) => (
           <Poo key={i} position={p as [number, number, number]} />
