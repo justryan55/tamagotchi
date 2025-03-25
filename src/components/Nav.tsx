@@ -8,12 +8,14 @@ interface NavProps {
   toggleStatsClass: () => void;
   toggleAnimationsClass: () => void;
   toggleFood: () => void;
+  toggleLight: () => void;
 }
 
 export default function Nav({
   toggleStatsClass,
   toggleAnimationsClass,
   toggleFood,
+  toggleLight,
 }: NavProps) {
   return (
     <>
@@ -45,7 +47,13 @@ export default function Nav({
               className={styles["nav-item"]}
               key={item.id}
               aria-label={item.text}
-              onClick={item.text === NavItems[0].text ? toggleFood : undefined}
+              onClick={
+                item.text === NavItems[0].text
+                  ? toggleFood
+                  : item.text === NavItems[4].text
+                  ? toggleLight
+                  : undefined
+              }
             >
               {item.svg}
             </li>

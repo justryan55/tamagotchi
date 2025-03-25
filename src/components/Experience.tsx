@@ -22,6 +22,8 @@ interface ExperienceProps {
   spawnPoo: boolean;
   spawnFood: boolean;
   setSpawnFood: (state: boolean) => void;
+  directionalLight: number;
+  ambientLight: number;
 }
 
 interface DogProps {
@@ -194,6 +196,8 @@ export default function Experience({
   spawnPoo,
   spawnFood,
   setSpawnFood,
+  directionalLight,
+  ambientLight,
 }: ExperienceProps) {
   const { perfVisible } = useControls({
     perfVisible: false,
@@ -216,14 +220,16 @@ export default function Experience({
     }
   }, [setStats, spawnPoo]);
 
+  useEffect(() => {});
+
   return (
     <>
       <Leva hidden />
       <Canvas camera={{ position: [0, 0.75, 2.75] }}>
         {perfVisible && <Perf position="top-left" />}
         {/* <OrbitControls /> */}
-        <directionalLight intensity={5} />
-        <ambientLight intensity={2} />
+        <directionalLight intensity={directionalLight} />
+        <ambientLight intensity={ambientLight} />
         <Dog animation={animation} />
         <Floor />
         {spawnFood && <Food setSpawnFood={setSpawnFood} />}
