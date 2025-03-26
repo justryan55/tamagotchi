@@ -104,7 +104,7 @@ function Poo({ position }: PooProps) {
           ...prevStats,
           hygiene: {
             ...prevStats.hygiene,
-            pooPosition: updatedPooPosition,
+            pooPosition: [...updatedPooPosition],
           },
         };
       });
