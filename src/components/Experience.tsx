@@ -1,7 +1,12 @@
 "use client";
 
 import { useStats } from "@/providers/StatsProvider";
-import { Clone, DragControls, useAnimations } from "@react-three/drei";
+import {
+  Clone,
+  DragControls,
+  OrbitControls,
+  useAnimations,
+} from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
@@ -11,6 +16,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { Physics, RigidBody } from "@react-three/rapier";
 
 interface ExperienceProps {
   animation: string;
@@ -135,16 +141,18 @@ function Floor() {
   ]);
 
   return (
-    <mesh rotation={[-Math.PI * 0.5, 0, 0]} position={[0, -0.5, 0]}>
-      <planeGeometry args={[3.5, 3.5]} />
-      <meshStandardMaterial
-        map={colourMap}
-        normalMap={normalMap}
-        aoMap={armMap}
-        roughnessMap={armMap}
-        metalnessMap={armMap}
-      />
-    </mesh>
+    <RigidBody type="fixed">
+      <mesh rotation={[-Math.PI * 0.5, 0, 0]} position={[0, -0.5, 0]}>
+        <planeGeometry args={[3.5, 3.5]} />
+        <meshStandardMaterial
+          map={colourMap}
+          normalMap={normalMap}
+          aoMap={armMap}
+          roughnessMap={armMap}
+          metalnessMap={armMap}
+        />
+      </mesh>
+    </RigidBody>
   );
 }
 
@@ -194,6 +202,30 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
   );
 }
 
+function Ball() {
+  const ball = useLoader(GLTFLoader, "/models/ball.glb");
+
+  const ballRef = useRef<any>(null);
+
+  const bounce = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    if (ballRef.current) {
+      ballRef.current.applyImpulse({ x: 0, y: 0.005, z: 0 });
+    }
+  };
+
+  return (
+    <RigidBody
+      colliders="ball"
+      restitution={1}
+      position={[0.9, 1, 0.5]}
+      ref={ballRef}
+    >
+      <primitive object={ball.scene} onClick={bounce} />
+    </RigidBody>
+  );
+}
+
 export default function Experience({
   animation,
   setAnimation,
@@ -231,7 +263,6 @@ export default function Experience({
         <directionalLight intensity={lightSettings.directional} />
         <ambientLight intensity={lightSettings.ambient} />
         <Dog animation={animation} />
-        <Floor />
         {spawnFood && (
           <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
         )}
@@ -239,6 +270,10 @@ export default function Experience({
         {stats.hygiene.pooPosition.map((p, i) => (
           <Poo key={i} position={p as [number, number, number]} />
         ))}
+        <Physics>
+          <Floor />
+          <Ball />
+        </Physics>
       </Canvas>
     </>
   );
