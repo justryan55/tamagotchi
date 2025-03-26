@@ -5,17 +5,17 @@ interface CheckStatsProp {
   setSpawnPoo: (state: boolean) => void;
 }
 export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
-  const { stats, setStats } = useStats();
+  const { stats } = useStats();
+  const hygieneValue = Math.round(stats.hygiene.value);
 
   useEffect(() => {
-    if (stats.hygiene.value === 100) return;
-
-    if (Math.round(stats.hygiene.value) % 25 === 0) {
-      setSpawnPoo(true);
-    } else {
+    if (hygieneValue === 100) {
       setSpawnPoo(false);
+      return;
     }
-  }, [stats.hygiene.value, setSpawnPoo]);
+
+    setSpawnPoo(hygieneValue % 25 === 0);
+  }, [hygieneValue, setSpawnPoo]);
 
   return null;
 }
