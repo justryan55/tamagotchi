@@ -6,7 +6,7 @@ interface CheckStatsProp {
 }
 export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
   const { stats } = useStats();
-  const hygieneValue = Math.round(stats.hygiene.value);
+  const hygieneValue = Math.ceil(stats.hygiene.value);
 
   useEffect(() => {
     if (hygieneValue === 100) {
