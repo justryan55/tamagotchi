@@ -1,12 +1,7 @@
 "use client";
 
 import { useStats } from "@/providers/StatsProvider";
-import {
-  Clone,
-  DragControls,
-  OrbitControls,
-  useAnimations,
-} from "@react-three/drei";
+import { Clone, DragControls, useAnimations } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
@@ -58,7 +53,7 @@ function Dog({ animation }: DogProps) {
     return () => {
       action?.fadeOut(0.5);
     };
-  }, [animation]);
+  }, [animation, animations.actions]);
 
   return (
     <>
@@ -71,7 +66,6 @@ function Poo({ position }: PooProps) {
   const poo = useLoader(GLTFLoader, "/models/poo.glb");
   const { stats, setStats } = useStats();
   const pooRef = useRef<THREE.Group | null>(null);
-  const difference = 1.5;
 
   // const handleFollow = () => {
   //   const worldPosition = new THREE.Vector3();
@@ -84,26 +78,22 @@ function Poo({ position }: PooProps) {
 
     const worldPosition = new THREE.Vector3();
     pooRef.current.getWorldPosition(worldPosition);
-    console.log(worldPosition);
+
     if (
       worldPosition.x > -1.5 &&
       worldPosition.x < -0.8 &&
       worldPosition.z > -1.25 &&
       worldPosition.z < -0.75
     ) {
+      const updatedPooPosition = stats.hygiene.pooPosition.filter(
+        (position) =>
+          !(
+            position[0] === pooRef.current?.position.x &&
+            position[2] === pooRef.current?.position.z
+          )
+      );
+
       setStats((prevStats) => {
-        const updatedPooPosition = prevStats.hygiene.pooPosition.filter(
-          (position) =>
-            !(
-              Math.abs(position[0] - worldPosition.x) < difference &&
-              Math.abs(position[2] - worldPosition.z) < difference
-            )
-        );
-
-        // console.log(updatedPooPosition);
-        // console.log("WOrld", worldPosition);
-
-        // console.log(...prevStats.hygiene.pooPosition);
         return {
           ...prevStats,
           hygiene: {
@@ -218,9 +208,8 @@ export default function Experience({
   const { stats, setStats } = useStats();
 
   useEffect(() => {
-    const pooPosition = [Math.random(), -0.42, Math.random()];
-
     if (spawnPoo) {
+      const pooPosition = [Math.random(), -0.42, Math.random()];
       setStats((prevStats) => {
         return {
           ...prevStats,
@@ -232,8 +221,6 @@ export default function Experience({
       });
     }
   }, [setStats, spawnPoo]);
-
-  useEffect(() => {});
 
   return (
     <>
