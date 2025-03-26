@@ -71,14 +71,20 @@ function Poo({ position }: PooProps) {
   const poo = useLoader(GLTFLoader, "/models/poo.glb");
   const { stats, setStats } = useStats();
   const pooRef = useRef<THREE.Group | null>(null);
-  const difference = 2;
+  const difference = 1.5;
+
+  // const handleFollow = () => {
+  //   const worldPosition = new THREE.Vector3();
+  //   pooRef.current.getWorldPosition(worldPosition);
+  //   console.log(worldPosition);
+  // };
 
   const handleDragEnd = () => {
     if (!pooRef.current) return;
 
     const worldPosition = new THREE.Vector3();
     pooRef.current.getWorldPosition(worldPosition);
-
+    console.log(worldPosition);
     if (
       worldPosition.x > -1.5 &&
       worldPosition.x < -0.8 &&
@@ -94,10 +100,10 @@ function Poo({ position }: PooProps) {
             )
         );
 
-        console.log(updatedPooPosition);
-        console.log("WOrld", worldPosition);
+        // console.log(updatedPooPosition);
+        // console.log("WOrld", worldPosition);
 
-        console.log(...prevStats.hygiene.pooPosition);
+        // console.log(...prevStats.hygiene.pooPosition);
         return {
           ...prevStats,
           hygiene: {
@@ -113,11 +119,12 @@ function Poo({ position }: PooProps) {
     <DragControls
       autoTransform={true}
       axisLock="y"
-      dragLimits={[
-        [-1.5, 0.5],
-        [0, 0],
-        [-2, 1],
-      ]}
+      // dragLimits={[
+      //   [-1.5, 0.5],
+      //   [0, 0],
+      //   [-2, 1],
+      // ]}
+      // onDrag={handleFollow}
       onDragEnd={handleDragEnd}
     >
       <Clone
