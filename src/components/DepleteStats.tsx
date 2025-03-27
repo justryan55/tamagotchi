@@ -2,7 +2,7 @@ import { useStats } from "@/providers/StatsProvider";
 import { useUser } from "@/providers/UserProvider";
 import { useEffect, useState } from "react";
 
-export default function DepleteStats({ lightOn }: () => void) {
+export default function DepleteStats({ lightOn }: { lightOn: () => void }) {
   const { stats, setStats } = useStats();
   const { user, setUser } = useUser();
   const [time, setTime] = useState<number>(Date.now());
@@ -12,7 +12,6 @@ export default function DepleteStats({ lightOn }: () => void) {
   };
 
   useEffect(() => {
-
     if (!lightOn) {
       return;
     }
