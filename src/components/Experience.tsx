@@ -10,7 +10,7 @@ import {
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
@@ -21,7 +21,9 @@ import { Physics, RigidBody } from "@react-three/rapier";
 interface ExperienceProps {
   animation: string;
   setAnimation: (state: string) => void;
+  setSpawnPoo: (state: boolean) => void;
   spawnPoo: boolean;
+  spawnBall: boolean;
   spawnFood: boolean;
   setSpawnFood: (state: boolean) => void;
   lightSettings: {
@@ -42,6 +44,10 @@ interface PooProps {
 interface FoodProps {
   setSpawnFood: (state: boolean) => void;
   setAnimation: (state: string) => void;
+}
+
+interface BallProps {
+  position: [number, number, number];
 }
 
 gsap.registerPlugin(useGSAP);
@@ -104,7 +110,12 @@ function Poo({ position }: PooProps) {
           ...prevStats,
           hygiene: {
             ...prevStats.hygiene,
+            value: prevStats.hygiene.value + 25,
             pooPosition: [...updatedPooPosition],
+          },
+          health: {
+            ...prevStats.health,
+            value: prevStats.health.value + 25,
           },
         };
       });
@@ -156,24 +167,84 @@ function Floor() {
   );
 }
 
+function Walls() {
+  const [aoMap, colourMap, normalMap, roughnessMap, metalnessMap] = useLoader(
+    TextureLoader,
+    [
+      "/textures/wall/Poliigon_PlasterPainted_7664_AmbientOcclusion.png",
+      "/textures/wall/Poliigon_PlasterPainted_7664_BaseColor.png",
+      "/textures/wall/Poliigon_PlasterPainted_7664_Normal.png",
+      "/textures/wall/Poliigon_PlasterPainted_7664_Roughness.png",
+      "/textures/wall/Poliigon_PlasterPainted_7664_Metallic.png",
+    ]
+  );
+
+  const WallMaterial = () => {
+    return (
+      <meshStandardMaterial
+        color="#B0B0B0"
+        map={colourMap}
+        normalMap={normalMap}
+        aoMap={aoMap}
+        roughnessMap={roughnessMap}
+        metalnessMap={metalnessMap}
+      />
+    );
+  };
+  return (
+    <RigidBody type="fixed">
+      <mesh position={[0, 1.25, -1.75]}>
+        <planeGeometry args={[3.5, 3.5]} />
+        <WallMaterial />
+      </mesh>
+      <mesh rotation={[0, Math.PI * 0.5, 0]} position={[-1.75, 1.25, 0]}>
+        <planeGeometry args={[3.5, 3.5]} />
+        <WallMaterial />
+      </mesh>
+      <mesh rotation={[0, -Math.PI * 0.5, 0]} position={[1.75, 1.25, 0]}>
+        <planeGeometry args={[3.5, 3.5]} />
+        <WallMaterial />
+      </mesh>
+    </RigidBody>
+  );
+}
+
 function Bin() {
   const bin = useLoader(GLTFLoader, "/models/bin.glb");
 
   return (
-    <primitive
-      object={bin.scene}
-      scale={[0.75, 0.75, 0.75]}
-      position={[-0.5, -0.25, -1.25]}
-      onPointerOver={() => {
-        // console.log("Test");
-      }}
-    />
+    <RigidBody type="fixed">
+      <primitive
+        object={bin.scene}
+        scale={[0.75, 0.75, 0.75]}
+        position={[-0.5, -0.25, -1.25]}
+        onPointerOver={() => {
+          // console.log("Test");
+        }}
+      />
+    </RigidBody>
+  );
+}
+
+function Plant() {
+  const plant = useLoader(GLTFLoader, "/models/rhyzome_plant.glb");
+
+  return (
+    <RigidBody>
+      <primitive
+        object={plant.scene}
+        scale={[0.75, 0.75, 0.75]}
+        position={[1.25, -0.5, -1.15]}
+      />
+    </RigidBody>
   );
 }
 
 function Food({ setSpawnFood, setAnimation }: FoodProps) {
   const food = useLoader(GLTFLoader, "/models/food.glb");
   const foodRef = useRef<THREE.Group | null>(null);
+  const { stats, setStats } = useStats();
+
   useGSAP(() => {
     if (foodRef.current) {
       gsap.fromTo(
@@ -186,6 +257,23 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
           onComplete: () => {
             setSpawnFood(false);
             setAnimation("standing");
+            setStats((prevStats) => {
+              return {
+                ...prevStats,
+                happiness: {
+                  ...prevStats.happiness,
+                  value: prevStats.happiness.value + 25,
+                },
+                energy: {
+                  ...prevStats.energy,
+                  value: prevStats.energy.value + 25,
+                },
+                hunger: {
+                  ...prevStats.hunger,
+                  value: prevStats.hunger.value + 25,
+                },
+              };
+            });
           },
         }
       );
@@ -202,24 +290,49 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
   );
 }
 
-function Ball() {
+function Ball({ position }: BallProps) {
   const ball = useLoader(GLTFLoader, "/models/ball.glb");
+  const { setStats } = useStats();
 
   const ballRef = useRef<any>(null);
 
   const bounce = (event: React.MouseEvent) => {
     event.stopPropagation();
     if (ballRef.current) {
-      ballRef.current.applyImpulse({ x: 0, y: 0.005, z: 0 });
+      ballRef.current.wakeUp();
+      const randomSign = () => (Math.random() < 0.5 ? -1 : 1);
+      ballRef.current.applyImpulse({
+        x: randomSign() * 0.005,
+        y: randomSign() * 0.005,
+        z: -0.005,
+      });
+
+      setStats((prevStats) => {
+        return {
+          ...prevStats,
+          happiness: {
+            ...prevStats.happiness,
+            value: prevStats.happiness.value + 5,
+          },
+          energy: {
+            ...prevStats.energy,
+            value: prevStats.energy.value - 5,
+          },
+        };
+      });
     }
   };
 
   return (
     <RigidBody
       colliders="ball"
-      restitution={1}
-      position={[0.9, 1, 0.5]}
+      restitution={0.7}
+      linearDamping={0.5}
+      angularDamping={0.5}
       ref={ballRef}
+      canSleep={false}
+      // position={[0.9, 1, -0.65]}
+      position={position}
     >
       <primitive object={ball.scene} onClick={bounce} />
     </RigidBody>
@@ -230,14 +343,19 @@ export default function Experience({
   animation,
   setAnimation,
   spawnPoo,
+  setSpawnPoo,
   spawnFood,
   setSpawnFood,
   lightSettings,
+  spawnBall,
 }: ExperienceProps) {
   const { perfVisible } = useControls({
     perfVisible: false,
   });
   const { stats, setStats } = useStats();
+  const [balls, setBalls] = useState<Array<[number, number, number]>>([
+    [0.9, 1, -0.65],
+  ]);
 
   useEffect(() => {
     if (spawnPoo) {
@@ -251,8 +369,41 @@ export default function Experience({
           },
         };
       });
+      setSpawnPoo(false);
     }
-  }, [setStats, spawnPoo]);
+  }, [setStats, spawnPoo, setSpawnPoo]);
+
+  useEffect(() => {
+    if (spawnBall) {
+      const ballPosition: [number, number, number] = [
+        Math.random() * 3 - 1.5,
+        1,
+
+        Math.random() * 3 - 1.5,
+      ];
+      setBalls((prevBalls) => [...prevBalls, ballPosition]);
+    }
+  }, [spawnBall]);
+
+  useEffect(() => {
+    if (!lightSettings.lightOn) {
+      const interval = setInterval(() => {
+        setStats((prevStats) => {
+          return {
+            ...prevStats,
+            energy: {
+              ...prevStats.energy,
+              value: prevStats.energy.value + 5,
+            },
+          };
+        });
+      }, 3000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [lightSettings.lightOn, setStats]);
 
   return (
     <>
@@ -266,13 +417,17 @@ export default function Experience({
         {spawnFood && (
           <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
         )}
-        <Bin />
         {stats.hygiene.pooPosition.map((p, i) => (
           <Poo key={i} position={p as [number, number, number]} />
         ))}
         <Physics>
           <Floor />
-          <Ball />
+          <Walls />
+          <Plant />
+          <Bin />
+          {balls.map((position, index) => (
+            <Ball key={index} position={position} />
+          ))}
         </Physics>
       </Canvas>
     </>
