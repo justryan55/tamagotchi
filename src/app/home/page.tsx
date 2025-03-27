@@ -59,7 +59,7 @@ export default function Page() {
   return (
     <>
       <CheckStats setSpawnPoo={setSpawnPoo} />
-      <DepleteStats />
+      <DepleteStats lightOn={lightSettings.lightOn} />
       <Stats toggleStats={toggleStats} />
       {toggleAnimations && <AnimationList toggleAnimation={toggleAnimation} />}
       <div className={styles.canvas}>

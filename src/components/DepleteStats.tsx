@@ -2,7 +2,7 @@ import { useStats } from "@/providers/StatsProvider";
 import { useUser } from "@/providers/UserProvider";
 import { useEffect, useState } from "react";
 
-export default function DepleteStats() {
+export default function DepleteStats({ lightOn }: () => void) {
   const { stats, setStats } = useStats();
   const { user, setUser } = useUser();
   const [time, setTime] = useState<number>(Date.now());
@@ -12,6 +12,11 @@ export default function DepleteStats() {
   };
 
   useEffect(() => {
+
+    if (!lightOn) {
+      return;
+    }
+
     const interval = setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = (currentTime - time) / 1000;
@@ -54,7 +59,7 @@ export default function DepleteStats() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [lightOn, stats, time, setStats]);
 
   const useMountEffect = () => {
     useEffect(() => {
