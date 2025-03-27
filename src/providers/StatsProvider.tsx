@@ -6,6 +6,7 @@ interface Stats {
   xp: {
     id: number;
     title: string;
+    level: number;
     value: number;
   };
   happiness: {
@@ -45,6 +46,7 @@ const defaultStats: Stats = {
   xp: {
     id: 0,
     title: "XP",
+    level: 1,
     value: 0,
   },
   happiness: {

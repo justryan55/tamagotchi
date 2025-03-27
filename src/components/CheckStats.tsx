@@ -5,8 +5,10 @@ interface CheckStatsProp {
   setSpawnPoo: (state: boolean) => void;
 }
 export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
-  const { stats } = useStats();
+  const { stats, setStats } = useStats();
   const hygieneValue = Math.ceil(stats.hygiene.value);
+  const xpValue = stats.xp.value;
+  const xpLevel = stats.xp.level;
   const [hasSpawnedPoo, setHasSpawnedPoo] = useState(false);
 
   useEffect(() => {
@@ -16,16 +18,31 @@ export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
       return;
     }
 
-    if (hygieneValue % 25 === 0 && hygieneValue !== 0 && !hasSpawnedPoo) {
+    if (hygieneValue % 20 === 0 && hygieneValue !== 0 && !hasSpawnedPoo) {
       setSpawnPoo(true);
       setHasSpawnedPoo(true);
       return;
     }
 
-    if (hygieneValue > 0 && hygieneValue % 25 !== 0 && hasSpawnedPoo) {
+    if (hygieneValue > 0 && hygieneValue % 20 !== 0 && hasSpawnedPoo) {
       setHasSpawnedPoo(false);
     }
   }, [hygieneValue, setSpawnPoo, hasSpawnedPoo]);
+
+  useEffect(() => {
+    if (xpValue === 100) {
+      setStats((prevStats) => {
+        return {
+          ...prevStats,
+          xp: {
+            ...prevStats.xp,
+            value: prevStats.xp.value % 100,
+            level: prevStats.xp.level + 1,
+          },
+        };
+      });
+    }
+  }, [xpValue, setStats]);
 
   return null;
 }

@@ -5,6 +5,7 @@ import {
   Clone,
   DragControls,
   OrbitControls,
+  Text,
   useAnimations,
 } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
@@ -116,6 +117,10 @@ function Poo({ position }: PooProps) {
           health: {
             ...prevStats.health,
             value: prevStats.health.value + 25,
+          },
+          xp: {
+            ...prevStats.xp,
+            value: prevStats.xp.value + 10,
           },
         };
       });
@@ -272,6 +277,10 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
                   ...prevStats.hunger,
                   value: prevStats.hunger.value + 25,
                 },
+                xp: {
+                  ...prevStats.xp,
+                  value: prevStats.xp.value + 10,
+                },
               };
             });
           },
@@ -318,6 +327,10 @@ function Ball({ position }: BallProps) {
             ...prevStats.energy,
             value: prevStats.energy.value - 5,
           },
+          xp: {
+            ...prevStats.xp,
+            value: prevStats.xp.value + 5,
+          },
         };
       });
     }
@@ -336,6 +349,31 @@ function Ball({ position }: BallProps) {
     >
       <primitive object={ball.scene} onClick={bounce} />
     </RigidBody>
+  );
+}
+
+function Whiteboard() {
+  const whiteboard = useLoader(GLTFLoader, "/models/whiteboard.glb");
+  const { stats } = useStats();
+
+  return (
+    <primitive
+      object={whiteboard.scene}
+      scale={[0.003, 0.003, 0.003]}
+      rotation={[0, -0.3, 0]}
+      position={[-1, 1.5, -1.7]}
+    >
+      <Text
+        rotation={[0, 0.3, 0]}
+        position={[0, 0.3, 0.01]}
+        fontSize={50}
+        color="black"
+        anchorX="center"
+        anchorY="middle"
+      >
+        Level: {stats.xp.level}
+      </Text>
+    </primitive>
   );
 }
 
@@ -420,6 +458,7 @@ export default function Experience({
         {stats.hygiene.pooPosition.map((p, i) => (
           <Poo key={i} position={p as [number, number, number]} />
         ))}
+        <Whiteboard />
         <Physics>
           <Floor />
           <Walls />
