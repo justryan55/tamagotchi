@@ -83,26 +83,57 @@ export const NavItems = [
   },
   {
     id: 3,
-    text: "Walk",
+    text: "Play",
     svg: (
       <svg
         width="40px"
         height="40px"
-        strokeWidth="1.5"
+        stroke-width="1.5"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        color="#77767b"
-        aria-label="Walk"
+        color="#e5a50a"
       >
         <path
-          d="M3.68478 18.7826L11.5642 4.77473C11.7554 4.43491 12.2446 4.43491 12.4358 4.77473L20.3152 18.7826C20.5454 19.1918 20.1357 19.6639 19.6982 19.4937L12.1812 16.5705C12.0647 16.5251 11.9353 16.5251 11.8188 16.5705L4.30179 19.4937C3.86426 19.6639 3.45463 19.1918 3.68478 18.7826Z"
-          stroke="#77767b"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+          stroke="#e5a50a"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M18.5716 4.46234C15.905 8.99175 15.9049 14.1847 18.5716 19.5377"
+          stroke="#e5a50a"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        ></path>
+        <path
+          d="M5.42834 4.46234C8.09501 8.99175 8.09513 14.1847 5.42834 19.5377"
+          stroke="#e5a50a"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         ></path>
       </svg>
+      // <svg
+      //   width="40px"
+      //   height="40px"
+      //   strokeWidth="1.5"
+      //   viewBox="0 0 24 24"
+      //   fill="none"
+      //   xmlns="http://www.w3.org/2000/svg"
+      //   color="#77767b"
+      //   aria-label="Walk"
+      // >
+      //   <path
+      //     d="M3.68478 18.7826L11.5642 4.77473C11.7554 4.43491 12.2446 4.43491 12.4358 4.77473L20.3152 18.7826C20.5454 19.1918 20.1357 19.6639 19.6982 19.4937L12.1812 16.5705C12.0647 16.5251 11.9353 16.5251 11.8188 16.5705L4.30179 19.4937C3.86426 19.6639 3.45463 19.1918 3.68478 18.7826Z"
+      //     stroke="#77767b"
+      //     strokeWidth="1.5"
+      //     strokeLinecap="round"
+      //     strokeLinejoin="round"
+      //   ></path>
+      // </svg>
     ),
   },
   {
@@ -165,32 +196,31 @@ export const NavItems = [
         width="40px"
         height="40px"
         viewBox="0 0 24 24"
-        strokeWidth="1.5"
+        stroke-width="1.5"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        color="#ffbe6f"
-        aria-label="Sleep"
+        color="#77767b"
       >
         <path
           d="M21 4V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V4C3 2.89543 3.89543 2 5 2H19C20.1046 2 21 2.89543 21 4Z"
-          stroke="#ffbe6f"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          stroke="#77767b"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         ></path>
         <path
           d="M3 8L11 8L11 6"
-          stroke="#ffbe6f"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          stroke="#77767b"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         ></path>
         <path
           d="M21 8L13 8L13 6"
-          stroke="#ffbe6f"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          stroke="#77767b"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         ></path>
       </svg>
     ),
