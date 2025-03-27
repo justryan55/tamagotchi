@@ -9,6 +9,7 @@ interface NavProps {
   toggleAnimationsClass: () => void;
   toggleFood: () => void;
   toggleLight: () => void;
+  toggleBall: () => void;
 }
 
 export default function Nav({
@@ -16,6 +17,7 @@ export default function Nav({
   toggleAnimationsClass,
   toggleFood,
   toggleLight,
+  toggleBall,
 }: NavProps) {
   return (
     <>
@@ -50,6 +52,8 @@ export default function Nav({
               onClick={
                 item.text === NavItems[0].text
                   ? toggleFood
+                  : item.text === NavItems[2].text
+                  ? toggleBall
                   : item.text === NavItems[4].text
                   ? toggleLight
                   : undefined

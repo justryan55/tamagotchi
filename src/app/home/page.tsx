@@ -15,6 +15,7 @@ export default function Page() {
   const [animation, setAnimation] = useState("standing");
   const [spawnPoo, setSpawnPoo] = useState(false);
   const [spawnFood, setSpawnFood] = useState(false);
+  const [spawnBall, setSpawnBall] = useState(false);
   const [lightSettings, setLightSettings] = useState({
     lightOn: true,
     directional: 5,
@@ -33,6 +34,10 @@ export default function Page() {
 
   const toggleAnimation = (animation: string) => {
     setAnimation(animation);
+  };
+
+  const toggleBall = () => {
+    setSpawnBall((prev) => !prev);
   };
 
   const toggleFood = () => {
@@ -62,9 +67,11 @@ export default function Page() {
           animation={animation}
           setAnimation={setAnimation}
           spawnPoo={spawnPoo}
+          setSpawnPoo={setSpawnPoo}
           spawnFood={spawnFood}
           setSpawnFood={setSpawnFood}
           lightSettings={lightSettings}
+          spawnBall={spawnBall}
         />
       </div>
       <Nav
@@ -72,6 +79,7 @@ export default function Page() {
         toggleAnimationsClass={toggleAnimationsClass}
         toggleFood={toggleFood}
         toggleLight={toggleLight}
+        toggleBall={toggleBall}
       />
     </>
   );
