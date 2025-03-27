@@ -6,7 +6,7 @@ interface StatsProps {
 }
 
 export default function Stats({ toggleStats }: StatsProps) {
-  const { stats, setStats } = useStats();
+  const { stats } = useStats();
   return (
     <div className={`${styles.container} ${toggleStats ? "" : styles.hidden}`}>
       <ul>
