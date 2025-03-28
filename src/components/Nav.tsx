@@ -58,7 +58,7 @@ export default function Nav({
                   ? toggleCleaningFeature
                   : item.text === NavItems[2].text
                   ? toggleBall
-                  : item.text === NavItems[4].text
+                  : item.text === NavItems[3].text
                   ? toggleLight
                   : undefined
               }
