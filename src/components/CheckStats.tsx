@@ -3,14 +3,20 @@ import { useEffect, useState } from "react";
 
 interface CheckStatsProp {
   setSpawnPoo: (state: boolean) => void;
+  isCleaning: boolean;
 }
-export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
+export default function CheckStats({
+  setSpawnPoo,
+  isCleaning,
+}: CheckStatsProp) {
   const { stats, setStats } = useStats();
   const hygieneValue = Math.ceil(stats.hygiene.value);
   const xpValue = stats.xp.value;
   const [hasSpawnedPoo, setHasSpawnedPoo] = useState(false);
 
   useEffect(() => {
+    if (isCleaning) return;
+
     if (hygieneValue === 100) {
       setSpawnPoo(false);
       setHasSpawnedPoo(false);
@@ -26,7 +32,7 @@ export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
     if (hygieneValue > 0 && hygieneValue % 10 !== 0 && hasSpawnedPoo) {
       setHasSpawnedPoo(false);
     }
-  }, [hygieneValue, setSpawnPoo, hasSpawnedPoo]);
+  }, [hygieneValue, hasSpawnedPoo, isCleaning]);
 
   useEffect(() => {
     if (xpValue >= 100) {
