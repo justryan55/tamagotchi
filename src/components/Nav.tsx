@@ -10,6 +10,7 @@ interface NavProps {
   toggleFood: () => void;
   toggleLight: () => void;
   toggleBall: () => void;
+  toggleCleaningFeature: () => void;
 }
 
 export default function Nav({
@@ -18,6 +19,7 @@ export default function Nav({
   toggleFood,
   toggleLight,
   toggleBall,
+  toggleCleaningFeature,
 }: NavProps) {
   return (
     <>
@@ -52,6 +54,8 @@ export default function Nav({
               onClick={
                 item.text === NavItems[0].text
                   ? toggleFood
+                  : item.text === NavItems[1].text
+                  ? toggleCleaningFeature
                   : item.text === NavItems[2].text
                   ? toggleBall
                   : item.text === NavItems[4].text

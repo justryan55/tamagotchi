@@ -16,6 +16,7 @@ export default function Page() {
   const [spawnPoo, setSpawnPoo] = useState(false);
   const [spawnFood, setSpawnFood] = useState(false);
   const [spawnBall, setSpawnBall] = useState(false);
+  const [isCleaning, setIsCleaning] = useState(false);
   const [lightSettings, setLightSettings] = useState({
     lightOn: true,
     directional: 5,
@@ -47,6 +48,10 @@ export default function Page() {
     }
   };
 
+  const toggleCleaningFeature = () => {
+    setIsCleaning((prev) => !prev);
+  };
+
   const toggleLight = () => {
     setLightSettings((prev) => ({
       ...prev,
@@ -72,6 +77,8 @@ export default function Page() {
           setSpawnFood={setSpawnFood}
           lightSettings={lightSettings}
           spawnBall={spawnBall}
+          toggleCleaningFeature={toggleCleaningFeature}
+          isCleaning={isCleaning}
         />
       </div>
       <Nav
@@ -80,6 +87,7 @@ export default function Page() {
         toggleFood={toggleFood}
         toggleLight={toggleLight}
         toggleBall={toggleBall}
+        toggleCleaningFeature={toggleCleaningFeature}
       />
     </>
   );

@@ -29,7 +29,7 @@ export default function CheckStats({ setSpawnPoo }: CheckStatsProp) {
   }, [hygieneValue, setSpawnPoo, hasSpawnedPoo]);
 
   useEffect(() => {
-    if (xpValue === 100) {
+    if (xpValue >= 100) {
       setStats((prevStats) => {
         return {
           ...prevStats,

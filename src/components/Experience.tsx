@@ -26,6 +26,8 @@ interface ExperienceProps {
   spawnPoo: boolean;
   spawnBall: boolean;
   spawnFood: boolean;
+  toggleCleaningFeature: (state: boolean) => void;
+  isCleaning: boolean;
   setSpawnFood: (state: boolean) => void;
   lightSettings: {
     lightOn: boolean;
@@ -34,8 +36,16 @@ interface ExperienceProps {
   };
 }
 
+interface TextState {
+  content: string;
+  fontSize: number;
+}
+
 interface DogProps {
   animation: string;
+  isCleaning: boolean;
+  toggleCleaningFeature: (state: boolean) => void;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface PooProps {
@@ -53,24 +63,102 @@ interface BallProps {
 
 gsap.registerPlugin(useGSAP);
 
-function Dog({ animation }: DogProps) {
+function Dog({
+  animation,
+  isCleaning,
+  toggleCleaningFeature,
+  setText,
+}: DogProps) {
   const dog = useLoader(GLTFLoader, "/models/dog.glb");
+  const bubbles = useLoader(GLTFLoader, "/models/bubbles.glb");
+  const bubbleActionRef = useRef<THREE.AnimationAction | null>(null);
+  const mousePosition = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const { stats, setStats } = useStats();
+  const [isDragging, setIsDragging] = useState(false);
+
   dog.scene.position.y = -0.5;
 
-  const animations = useAnimations(dog.animations, dog.scene);
+  const dogAnimations = useAnimations(dog.animations, dog.scene);
+  const bubbleAnimations = useAnimations(bubbles.animations, bubbles.scene);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (!isCleaning) return;
+    setIsDragging(true);
+    mousePosition.current = { x: e.clientX, y: e.clientY };
+
+    const action = bubbleAnimations.actions["Bubbles Floating"];
+
+    if (action) {
+      action.reset().setLoop(THREE.LoopRepeat, Infinity).fadeIn(2).play();
+      bubbleActionRef.current = action;
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging && !isCleaning) return;
+
+    const deltaX = Math.abs(e.clientX - mousePosition.current.x);
+    const deltaY = Math.abs(e.clientY - mousePosition.current.y);
+
+    if (deltaX < 5 || deltaY < 5) return;
+
+    mousePosition.current = { x: e.clientX, y: e.clientY };
+    setStats((prevStats) => {
+      return {
+        ...prevStats,
+        hygiene: {
+          ...prevStats.hygiene,
+          value: prevStats.hygiene.value + 1,
+        },
+        xp: {
+          ...prevStats.xp,
+          value: prevStats.xp.value + 1,
+        },
+      };
+    });
+  };
+
+  const handlePointerUp = () => {
+    if (!isCleaning) return;
+    setIsDragging(false);
+    bubbleActionRef.current?.fadeOut(0.5);
+    toggleCleaningFeature(false);
+
+    setText((prevText) => {
+      return {
+        ...prevText,
+        content: `Level: ${stats.xp.level}`,
+        fontSize: 50,
+      };
+    });
+  };
 
   useEffect(() => {
-    const action = animations.actions[animation];
+    const action = dogAnimations.actions[animation];
     action?.reset().fadeIn(0.5).play();
 
     return () => {
       action?.fadeOut(0.5);
     };
-  }, [animation, animations.actions]);
+  }, [animation, dogAnimations.actions]);
+
+  useEffect(() => {
+    if (!isCleaning) {
+      bubbleActionRef.current?.fadeOut(0.5);
+    }
+  }, [isCleaning]);
 
   return (
     <>
-      <primitive object={dog.scene} />
+      <primitive
+        object={dog.scene}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+      />
+      {isCleaning && (
+        <primitive object={bubbles.scene} scale={[0.002, 0.002, 0.002]} />
+      )}
     </>
   );
 }
@@ -347,12 +435,13 @@ function Ball({ position }: BallProps) {
       // position={[0.9, 1, -0.65]}
       position={position}
     >
-      <primitive object={ball.scene} onClick={bounce} />
+      {/* <primitive object={ball.scene} onClick={bounce} /> */}
+      <Clone object={ball.scene} onClick={bounce} />
     </RigidBody>
   );
 }
 
-function Whiteboard() {
+function Whiteboard({ content, fontSize }: TextState) {
   const whiteboard = useLoader(GLTFLoader, "/models/whiteboard.glb");
   const { stats } = useStats();
 
@@ -366,12 +455,12 @@ function Whiteboard() {
       <Text
         rotation={[0, 0.3, 0]}
         position={[0, 0.3, 0.01]}
-        fontSize={50}
+        fontSize={fontSize}
         color="black"
         anchorX="center"
         anchorY="middle"
       >
-        Level: {stats.xp.level}
+        {content}
       </Text>
     </primitive>
   );
@@ -386,11 +475,17 @@ export default function Experience({
   setSpawnFood,
   lightSettings,
   spawnBall,
+  toggleCleaningFeature,
+  isCleaning,
 }: ExperienceProps) {
   const { perfVisible } = useControls({
     perfVisible: false,
   });
   const { stats, setStats } = useStats();
+  const [text, setText] = useState({
+    content: `Level: ${stats.xp.level}`,
+    fontSize: 50,
+  });
   const [balls, setBalls] = useState<Array<[number, number, number]>>([
     [0.9, 1, -0.65],
   ]);
@@ -443,6 +538,18 @@ export default function Experience({
     }
   }, [lightSettings.lightOn, setStats]);
 
+  useEffect(() => {
+    if (isCleaning) {
+      setText((prevText) => {
+        return {
+          ...prevText,
+          content: `  Click on the dog\nand move to clean.`,
+          fontSize: 30,
+        };
+      });
+    }
+  }, [isCleaning]);
+
   return (
     <>
       <Leva hidden />
@@ -451,14 +558,20 @@ export default function Experience({
         {/* <OrbitControls /> */}
         <directionalLight intensity={lightSettings.directional} />
         <ambientLight intensity={lightSettings.ambient} />
-        <Dog animation={animation} />
+        <Dog
+          animation={animation}
+          isCleaning={isCleaning}
+          toggleCleaningFeature={toggleCleaningFeature}
+          setText={setText}
+        />
         {spawnFood && (
           <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
         )}
         {stats.hygiene.pooPosition.map((p, i) => (
           <Poo key={i} position={p as [number, number, number]} />
         ))}
-        <Whiteboard />
+        <Whiteboard content={text.content} fontSize={text.fontSize} />
+
         <Physics>
           <Floor />
           <Walls />
