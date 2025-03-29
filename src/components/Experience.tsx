@@ -18,6 +18,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Physics, RigidBody } from "@react-three/rapier";
+import { v4 as uuidv4 } from "uuid";
 
 interface ExperienceProps {
   animation: string;
@@ -188,13 +189,13 @@ function Poo({ position }: PooProps) {
       worldPosition.z > -1.25 &&
       worldPosition.z < -0.75
     ) {
-      const updatedPooPosition = stats.hygiene.pooPosition.filter(
-        (position) =>
-          !(
-            position[0] === pooRef.current?.position.x &&
-            position[2] === pooRef.current?.position.z
-          )
-      );
+      console.log(stats.hygiene.pooPosition);
+      const updatedPooPosition = stats.hygiene.pooPosition.filter((poo) => {
+        const [x, , z] = poo.position;
+        return !(
+          x === pooRef.current?.position.x && z === pooRef.current?.position.z
+        );
+      });
 
       setStats((prevStats) => {
         return {
@@ -495,12 +496,17 @@ export default function Experience({
   useEffect(() => {
     if (spawnPoo) {
       const pooPosition = [Math.random(), -0.42, Math.random()];
+      const newPoo = {
+        id: uuidv4(),
+        position: pooPosition,
+      };
+
       setStats((prevStats) => {
         return {
           ...prevStats,
           hygiene: {
             ...prevStats.hygiene,
-            pooPosition: [...prevStats.hygiene.pooPosition, pooPosition],
+            pooPosition: [...prevStats.hygiene.pooPosition, newPoo],
           },
         };
       });
@@ -577,8 +583,11 @@ export default function Experience({
         {spawnFood && (
           <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
         )}
-        {stats.hygiene.pooPosition.map((p, i) => (
-          <Poo key={i} position={p as [number, number, number]} />
+        {stats.hygiene.pooPosition.map((poo) => (
+          <Poo
+            key={poo.id}
+            position={poo.position as [number, number, number]}
+          />
         ))}
         <Whiteboard content={text.content} fontSize={text.fontSize} />
 

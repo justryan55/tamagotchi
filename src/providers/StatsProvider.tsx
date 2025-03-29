@@ -2,6 +2,11 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
+interface Poo {
+  id: string;
+  position: number[];
+}
+
 interface Stats {
   xp: {
     id: number;
@@ -33,7 +38,7 @@ interface Stats {
     id: number;
     title: string;
     value: number;
-    pooPosition: number[][];
+    pooPosition: Poo[];
   };
 }
 
