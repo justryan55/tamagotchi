@@ -45,7 +45,9 @@ interface DogProps {
   animation: string;
   isCleaning: boolean;
   toggleCleaningFeature: (state: boolean) => void;
-  setText: React.Dispatch<React.SetStateAction<string>>;
+  setText: React.Dispatch<
+    React.SetStateAction<{ content: string; fontSize: number }>
+  >;
 }
 
 interface PooProps {
@@ -545,6 +547,14 @@ export default function Experience({
           ...prevText,
           content: `  Click on the dog\nand move to clean.`,
           fontSize: 30,
+        };
+      });
+    } else {
+      setText((prevText) => {
+        return {
+          ...prevText,
+          content: `Level: ${stats.xp.level}`,
+          fontSize: 50,
         };
       });
     }
