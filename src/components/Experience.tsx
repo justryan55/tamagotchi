@@ -250,7 +250,7 @@ function Floor() {
   return (
     <RigidBody type="fixed">
       <mesh rotation={[-Math.PI * 0.5, 0, 0]} position={[0, -0.5, 0]}>
-        <planeGeometry args={[3.5, 3.5]} />
+        <planeGeometry args={[3.5, 3.62]} />
         <meshStandardMaterial
           map={colourMap}
           normalMap={normalMap}
