@@ -111,7 +111,7 @@ function Dog({
         ...prevStats,
         hygiene: {
           ...prevStats.hygiene,
-          value: prevStats.hygiene.value + 1,
+          value: Math.min(prevStats.hygiene.value + 1, 100),
         },
         xp: {
           ...prevStats.xp,
@@ -202,12 +202,12 @@ function Poo({ position }: PooProps) {
           ...prevStats,
           hygiene: {
             ...prevStats.hygiene,
-            value: prevStats.hygiene.value + 25,
+            value: Math.min(prevStats.hygiene.value + 25, 100),
             pooPosition: [...updatedPooPosition],
           },
           health: {
             ...prevStats.health,
-            value: prevStats.health.value + 25,
+            value: Math.min(prevStats.health.value + 25, 100),
           },
           xp: {
             ...prevStats.xp,
@@ -358,15 +358,15 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
                 ...prevStats,
                 happiness: {
                   ...prevStats.happiness,
-                  value: prevStats.happiness.value + 25,
+                  value: Math.min(prevStats.happiness.value + 25, 100),
                 },
                 energy: {
                   ...prevStats.energy,
-                  value: prevStats.energy.value + 25,
+                  value: Math.min(prevStats.energy.value + 25, 100),
                 },
                 hunger: {
                   ...prevStats.hunger,
-                  value: prevStats.hunger.value + 25,
+                  value: Math.min(prevStats.hunger.value + 25, 100),
                 },
                 xp: {
                   ...prevStats.xp,
@@ -412,11 +412,11 @@ function Ball({ position }: BallProps) {
           ...prevStats,
           happiness: {
             ...prevStats.happiness,
-            value: prevStats.happiness.value + 5,
+            value: Math.min(prevStats.happiness.value + 5, 100),
           },
           energy: {
             ...prevStats.energy,
-            value: prevStats.energy.value - 5,
+            value: Math.min(prevStats.energy.value - 5, 100),
           },
           xp: {
             ...prevStats.xp,
@@ -534,7 +534,7 @@ export default function Experience({
             ...prevStats,
             energy: {
               ...prevStats.energy,
-              value: prevStats.energy.value + 5,
+              value: Math.min(prevStats.energy.value + 5, 100),
             },
           };
         });
