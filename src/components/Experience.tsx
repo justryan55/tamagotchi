@@ -345,7 +345,7 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
     if (foodRef.current) {
       gsap.fromTo(
         foodRef.current?.position,
-        { x: -5 },
+        { x: -1 },
         {
           x: -0.25,
           duration: 2,
