@@ -249,7 +249,11 @@ function Floor() {
 
   return (
     <RigidBody type="fixed">
-      <mesh rotation={[-Math.PI * 0.5, 0, 0]} position={[0, -0.5, 0]}>
+      <mesh
+        rotation={[-Math.PI * 0.5, 0, 0]}
+        position={[0, -0.5, 0]}
+        receiveShadow
+      >
         <planeGeometry args={[3.5, 3.62]} />
         <meshStandardMaterial
           map={colourMap}
@@ -439,7 +443,7 @@ function Ball({ position }: BallProps) {
       position={position}
     >
       {/* <primitive object={ball.scene} onClick={bounce} /> */}
-      <Clone object={ball.scene} onClick={bounce} />
+      <Clone object={ball.scene} onClick={bounce} castShadow />
     </RigidBody>
   );
 }
@@ -570,10 +574,10 @@ export default function Experience({
   return (
     <>
       <Leva hidden />
-      <Canvas camera={{ position: [0, 0.75, 2.75] }}>
+      <Canvas shadows camera={{ position: [0, 0.75, 2.75] }}>
         {perfVisible && <Perf position="top-left" />}
         {/* <OrbitControls /> */}
-        <directionalLight intensity={lightSettings.directional} />
+        <directionalLight intensity={lightSettings.directional} castShadow />
         <ambientLight intensity={lightSettings.ambient} />
         <Dog
           animation={animation}
