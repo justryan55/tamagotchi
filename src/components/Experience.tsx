@@ -131,7 +131,7 @@ function Dog({
       return {
         ...prevText,
         content: `Level: ${stats.xp.level}`,
-        fontSize: 50,
+        fontSize: 70,
       };
     });
   };
@@ -462,6 +462,7 @@ function Whiteboard({ content, fontSize }: TextState) {
         color="black"
         anchorX="center"
         anchorY="middle"
+        font="/fonts/Marker-Regular.otf"
       >
         {content}
       </Text>
@@ -551,8 +552,8 @@ export default function Experience({
       setText((prevText) => {
         return {
           ...prevText,
-          content: `  Click on the dog\nand move to clean.`,
-          fontSize: 30,
+          content: `  Click on the dog\n and move to clean.`,
+          fontSize: 42,
         };
       });
     } else {
@@ -560,7 +561,7 @@ export default function Experience({
         return {
           ...prevText,
           content: `Level: ${stats.xp.level}`,
-          fontSize: 50,
+          fontSize: 70,
         };
       });
     }
