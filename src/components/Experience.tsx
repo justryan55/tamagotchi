@@ -4,7 +4,7 @@ import { useStats } from "@/providers/StatsProvider";
 import { Canvas } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import { Physics } from "@react-three/rapier";
 import { v4 as uuidv4 } from "uuid";
@@ -153,7 +153,9 @@ export default function Experience({
         />
         <ambientLight intensity={lightSettings.ambient} />
         {spawnFood && (
-          <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
+          <Suspense>
+            <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
+          </Suspense>
         )}
         {stats.hygiene.pooPosition.map((poo) => (
           <Poo

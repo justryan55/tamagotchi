@@ -1,10 +1,11 @@
+"use client";
+
 import { useStats } from "@/providers/StatsProvider";
 import { useGSAP } from "@gsap/react";
-import { useLoader } from "@react-three/fiber";
-import { useRef } from "react";
-import { GLTFLoader } from "three/examples/jsm/Addons.js";
+import { Suspense, useRef } from "react";
 import gsap from "gsap";
 import * as THREE from "three";
+import { useGLTF } from "@react-three/drei";
 
 gsap.registerPlugin(useGSAP);
 
@@ -14,7 +15,8 @@ interface FoodProps {
 }
 
 export default function Food({ setSpawnFood, setAnimation }: FoodProps) {
-  const food = useLoader(GLTFLoader, "/models/food.glb");
+  const food = useGLTF("/models/food.glb");
+  useGLTF.preload("/models/food.glb");
   const foodRef = useRef<THREE.Group | null>(null);
   const { setStats } = useStats();
 
@@ -22,7 +24,7 @@ export default function Food({ setSpawnFood, setAnimation }: FoodProps) {
     if (foodRef.current) {
       gsap.fromTo(
         foodRef.current?.position,
-        { x: 1 },
+        { x: 2.5 },
         {
           x: 0.25,
           duration: 2,
@@ -56,6 +58,7 @@ export default function Food({ setSpawnFood, setAnimation }: FoodProps) {
       );
     }
   }, []);
+
   return (
     <primitive
       object={food.scene}
