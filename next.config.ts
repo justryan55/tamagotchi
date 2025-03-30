@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   env: {
     WEATHER_API_KEY: process.env.WEATHER_API_KEY,
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/home",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
