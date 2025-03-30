@@ -2,7 +2,7 @@
 
 import { useStats } from "@/providers/StatsProvider";
 import { useGSAP } from "@gsap/react";
-import { Suspense, useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
