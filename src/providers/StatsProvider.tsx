@@ -87,16 +87,22 @@ const StatsContext = createContext<StatsContextType>({
   setStats: () => {},
 });
 
-const getInitialState = () => {
-  const stats = localStorage.getItem("stats");
-  return stats ? JSON.parse(stats) : defaultStats;
-};
-
 export const StatsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [stats, setStats] = useState(getInitialState);
+  const [stats, setStats] = useState<Stats>(defaultStats);
 
   useEffect(() => {
-    localStorage.setItem("stats", JSON.stringify(stats));
+    if (typeof window !== "undefined") {
+      const savedStats = localStorage.getItem("stats");
+      if (savedStats) {
+        setStats(JSON.parse(savedStats));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("stats", JSON.stringify(stats));
+    }
   }, [stats]);
 
   return (

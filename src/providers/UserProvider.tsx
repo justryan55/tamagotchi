@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
   lastLogonTime: number;
@@ -21,13 +21,18 @@ const UserContext = createContext<UserContextType>({
 });
 
 const getInitialState = () => {
-  // const user = fetch user from database
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : defaultUser;
 };
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState(getInitialState);
+  const [user, setUser] = useState(defaultUser);
+
+  useEffect(() => {
+    if (localStorage !== undefined) {
+      setUser(getInitialState);
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

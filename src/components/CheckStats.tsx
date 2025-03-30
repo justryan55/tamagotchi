@@ -32,7 +32,7 @@ export default function CheckStats({
     if (hygieneValue > 0 && hygieneValue % 10 !== 0 && hasSpawnedPoo) {
       setHasSpawnedPoo(false);
     }
-  }, [hygieneValue, hasSpawnedPoo, isCleaning]);
+  }, [hygieneValue, hasSpawnedPoo, isCleaning, setSpawnPoo]);
 
   useEffect(() => {
     if (xpValue >= 100) {
