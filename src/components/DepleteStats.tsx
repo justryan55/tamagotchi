@@ -3,6 +3,8 @@ import { useUser } from "@/providers/UserProvider";
 import { useEffect, useState } from "react";
 
 export default function DepleteStats({ lightOn }: { lightOn: boolean }) {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  /* eslint-disable react-hooks/exhaustive-deps */
   const { stats, setStats } = useStats();
   const { user, setUser } = useUser();
   const [time, setTime] = useState<number>(Date.now());
