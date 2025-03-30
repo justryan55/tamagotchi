@@ -139,7 +139,7 @@ export default function Experience({
         };
       });
     }
-  }, [isCleaning]);
+  }, [isCleaning, stats.xp.level]);
 
   return (
     <>
