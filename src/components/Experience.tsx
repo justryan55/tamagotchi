@@ -4,14 +4,16 @@ import { useStats } from "@/providers/StatsProvider";
 import {
   Clone,
   DragControls,
+  Helper,
   OrbitControls,
   Text,
   useAnimations,
+  useHelper,
 } from "@react-three/drei";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { Perf } from "r3f-perf";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { TextureLoader } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as THREE from "three";
@@ -152,17 +154,19 @@ function Dog({
   }, [isCleaning]);
 
   return (
-    <>
-      <primitive
-        object={dog.scene}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-      />
-      {isCleaning && (
-        <primitive object={bubbles.scene} scale={[0.002, 0.002, 0.002]} />
-      )}
-    </>
+    <Suspense>
+      <RigidBody>
+        <primitive
+          object={dog.scene}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        />
+        {isCleaning && (
+          <primitive object={bubbles.scene} scale={[0.002, 0.002, 0.002]} />
+        )}
+      </RigidBody>
+    </Suspense>
   );
 }
 
@@ -313,16 +317,18 @@ function Bin() {
   const bin = useLoader(GLTFLoader, "/models/bin.glb");
 
   return (
-    <RigidBody type="fixed">
-      <primitive
-        object={bin.scene}
-        scale={[0.75, 0.75, 0.75]}
-        position={[-0.5, -0.25, -1.25]}
-        onPointerOver={() => {
-          // console.log("Test");
-        }}
-      />
-    </RigidBody>
+    <Suspense>
+      <RigidBody type="fixed">
+        <primitive
+          object={bin.scene}
+          scale={[0.75, 0.75, 0.75]}
+          position={[-0.5, -0.25, -1.25]}
+          onPointerOver={() => {
+            // console.log("Test");
+          }}
+        />
+      </RigidBody>
+    </Suspense>
   );
 }
 
@@ -330,13 +336,15 @@ function Plant() {
   const plant = useLoader(GLTFLoader, "/models/rhyzome_plant.glb");
 
   return (
-    <RigidBody>
-      <primitive
-        object={plant.scene}
-        scale={[0.75, 0.75, 0.75]}
-        position={[1.25, -0.5, -1.15]}
-      />
-    </RigidBody>
+    <Suspense>
+      <RigidBody>
+        <primitive
+          object={plant.scene}
+          scale={[0.75, 0.75, 0.75]}
+          position={[1.25, -0.5, -1.15]}
+        />
+      </RigidBody>
+    </Suspense>
   );
 }
 
@@ -349,9 +357,9 @@ function Food({ setSpawnFood, setAnimation }: FoodProps) {
     if (foodRef.current) {
       gsap.fromTo(
         foodRef.current?.position,
-        { x: -1 },
+        { x: 1 },
         {
-          x: -0.25,
+          x: 0.25,
           duration: 2,
           ease: "power3.out",
           onComplete: () => {
@@ -453,24 +461,138 @@ function Whiteboard({ content, fontSize }: TextState) {
   const { stats } = useStats();
 
   return (
-    <primitive
-      object={whiteboard.scene}
-      scale={[0.003, 0.003, 0.003]}
-      rotation={[0, -0.3, 0]}
-      position={[-1, 1.5, -1.7]}
-    >
-      <Text
-        rotation={[0, 0.3, 0]}
-        position={[0, 0.3, 0.01]}
-        fontSize={fontSize}
-        color="black"
-        anchorX="center"
-        anchorY="middle"
-        font="/fonts/Marker-Regular.otf"
+    <Suspense>
+      <primitive
+        object={whiteboard.scene}
+        scale={[0.003, 0.003, 0.003]}
+        rotation={[0, -0.3, 0]}
+        position={[-1, 1.5, -1.7]}
       >
-        {content}
-      </Text>
-    </primitive>
+        <Text
+          rotation={[0, 0.3, 0]}
+          position={[0, 0.3, 0.01]}
+          fontSize={fontSize}
+          color="black"
+          anchorX="center"
+          anchorY="middle"
+          font="/fonts/Marker-Regular.otf"
+        >
+          {content}
+        </Text>
+      </primitive>
+    </Suspense>
+  );
+}
+
+function SleepingText() {
+  return (
+    <Text
+      position={[0, 0.5, 0]}
+      fontSize={0.2}
+      color="lightblue"
+      rotation={[-0.1, 0.2, 0]}
+      anchorX="center"
+      anchorY="middle"
+    >
+      Zzz...
+    </Text>
+  );
+}
+
+function Bed() {
+  const bed = useLoader(GLTFLoader, "/models/bed.glb");
+  return (
+    <Suspense>
+      <RigidBody>
+        <primitive
+          object={bed.scene}
+          rotation={[0, Math.PI, 0]}
+          position={[-1.1, -0.42, 1.25]}
+          scale={[0.5, 0.5, 0.5]}
+          castShadow
+          receiveShadow
+        />
+      </RigidBody>
+    </Suspense>
+  );
+}
+
+function GameboyArt() {
+  const gameboyArt = useLoader(GLTFLoader, "/models/gameboy-art.glb");
+  return (
+    <Suspense>
+      <primitive
+        object={gameboyArt.scene}
+        position={[1.75, -0.65, 0]}
+        rotation={[0, -Math.PI * 0.5, 0]}
+        scale={[0.02, 0.02, 0.02]}
+      />
+    </Suspense>
+  );
+}
+
+function LegoArt() {
+  const legoArt = useLoader(GLTFLoader, "/models/lego-art.glb");
+  return (
+    <Suspense>
+      <primitive
+        object={legoArt.scene}
+        position={[0.75, -0.65, -1.75]}
+        rotation={[0, 0, 0]}
+        scale={[0.02, 0.02, 0.02]}
+      />
+    </Suspense>
+  );
+}
+
+function Lamp() {
+  const lamp = useLoader(GLTFLoader, "/models/cactus-lamp.glb");
+  const [lightSettings, setLightSettings] = useState({
+    lightOn: true,
+    intensity: 1.25,
+  });
+
+  const lampRef = useRef();
+  const lightRef = useRef();
+
+  const handleClick = () => {
+    setLightSettings((prev) => ({
+      ...prev,
+      lightOn: !prev.lightOn,
+      intensity: prev.intensity === 0.75 ? 0 : 0.75,
+    }));
+  };
+
+  useFrame(() => {
+    if (!lampRef.current || !lightRef.current) return;
+
+    const lampPosition = lampRef.current.position;
+    lightRef.current.position.set(
+      lampPosition.x + 0.5,
+      lampPosition.y + 0.5,
+      lampPosition.z
+    );
+  });
+
+  return (
+    <>
+      <primitive
+        ref={lampRef}
+        object={lamp.scene}
+        scale={[0.0125, 0.0125, 0.0125]}
+        position={[-1.75, 0.75, -0.25]}
+        rotation={[0, Math.PI * 0.5, 0]}
+        onClick={handleClick}
+      />
+      <pointLight
+        ref={lightRef}
+        intensity={lightSettings.intensity}
+        distance={10}
+        decay={2}
+        color="#0cd157"
+        castShadow
+      />
+    </>
   );
 }
 
@@ -490,6 +612,7 @@ export default function Experience({
     perfVisible: false,
   });
   const { stats, setStats } = useStats();
+  const [sleeping, setSleeping] = useState(false);
   const [text, setText] = useState({
     content: `Level: ${stats.xp.level}`,
     fontSize: 50,
@@ -532,23 +655,26 @@ export default function Experience({
   }, [spawnBall]);
 
   useEffect(() => {
-    if (!lightSettings.lightOn) {
-      const interval = setInterval(() => {
-        setStats((prevStats) => {
-          return {
-            ...prevStats,
-            energy: {
-              ...prevStats.energy,
-              value: Math.min(prevStats.energy.value + 5, 100),
-            },
-          };
-        });
-      }, 3000);
+    setSleeping(false);
 
-      return () => {
-        clearInterval(interval);
-      };
-    }
+    if (lightSettings.lightOn) return;
+
+    setSleeping(true);
+    const interval = setInterval(() => {
+      setStats((prevStats) => {
+        return {
+          ...prevStats,
+          energy: {
+            ...prevStats.energy,
+            value: Math.min(prevStats.energy.value + 5, 100),
+          },
+        };
+      });
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [lightSettings.lightOn, setStats]);
 
   useEffect(() => {
@@ -576,15 +702,14 @@ export default function Experience({
       <Leva hidden />
       <Canvas shadows camera={{ position: [0, 0.75, 2.75] }}>
         {perfVisible && <Perf position="top-left" />}
-        {/* <OrbitControls /> */}
-        <directionalLight intensity={lightSettings.directional} castShadow />
-        <ambientLight intensity={lightSettings.ambient} />
-        <Dog
-          animation={animation}
-          isCleaning={isCleaning}
-          toggleCleaningFeature={toggleCleaningFeature}
-          setText={setText}
+        <directionalLight
+          intensity={lightSettings.directional}
+          position={[0, 2.5, 1]}
+          castShadow
         />
+        {/* <OrbitControls /> */}
+
+        <ambientLight intensity={lightSettings.ambient} />
         {spawnFood && (
           <Food setSpawnFood={setSpawnFood} setAnimation={setAnimation} />
         )}
@@ -595,8 +720,19 @@ export default function Experience({
           />
         ))}
         <Whiteboard content={text.content} fontSize={text.fontSize} />
-
+        {sleeping && <SleepingText />}
+        <GameboyArt />
+        <LegoArt />
+        <Lamp />
         <Physics>
+          <Dog
+            animation={animation}
+            isCleaning={isCleaning}
+            toggleCleaningFeature={toggleCleaningFeature}
+            setText={setText}
+          />
+
+          <Bed />
           <Floor />
           <Walls />
           <Plant />
