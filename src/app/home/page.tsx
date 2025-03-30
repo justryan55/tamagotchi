@@ -6,10 +6,12 @@ import DepleteStats from "@/components/DepleteStats";
 import Experience from "@/components/Experience";
 import Nav from "@/components/Nav";
 import Stats from "@/components/Stats";
+import WelcomeScreen from "@/components/WelcomeScreen";
 import styles from "@/styles/home.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
+  const [isFirstVisit, setIsFirstVisit] = useState<boolean>(true);
   const [toggleStats, setToggleStats] = useState(false);
   const [toggleAnimations, setToggleAnimations] = useState(false);
   const [animation, setAnimation] = useState("standing");
@@ -61,8 +63,24 @@ export default function Page() {
     }));
   };
 
+  useEffect(() => {
+    const firstVisit = localStorage.getItem("firstVisit");
+
+    if (firstVisit === null) {
+      localStorage.setItem("firstVisit", "false");
+      setIsFirstVisit(true);
+    } else if (firstVisit === "false") {
+      setIsFirstVisit(false);
+    }
+  }, []);
+
+  if (isFirstVisit === null) {
+    return null;
+  }
+
   return (
     <>
+      {isFirstVisit && <WelcomeScreen setIsFirstVisit={setIsFirstVisit} />}
       <CheckStats setSpawnPoo={setSpawnPoo} isCleaning={isCleaning} />
       <DepleteStats lightOn={lightSettings.lightOn} />
       <Stats toggleStats={toggleStats} />
