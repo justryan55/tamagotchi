@@ -1,4 +1,3 @@
-import { useStats } from "@/providers/StatsProvider";
 import { Text } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { Suspense } from "react";
@@ -11,7 +10,6 @@ interface TextState {
 
 export default function Whiteboard({ content, fontSize }: TextState) {
   const whiteboard = useLoader(GLTFLoader, "/models/whiteboard.glb");
-  const { stats } = useStats();
 
   return (
     <Suspense>

@@ -1,5 +1,6 @@
 import { useFrame, useLoader } from "@react-three/fiber";
 import { useRef, useState } from "react";
+import { Group, PointLight } from "three";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 export default function Lamp() {
@@ -9,8 +10,8 @@ export default function Lamp() {
     intensity: 1.25,
   });
 
-  const lampRef = useRef();
-  const lightRef = useRef();
+  const lampRef = useRef<Group | null>(null);
+  const lightRef = useRef<PointLight | null>(null);
 
   const handleClick = () => {
     setLightSettings((prev) => ({

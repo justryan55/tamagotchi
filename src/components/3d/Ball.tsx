@@ -4,7 +4,7 @@ import { useLoader } from "@react-three/fiber";
 import { RigidBody } from "@react-three/rapier";
 import { useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
-
+import type { RapierRigidBody } from "@react-three/rapier";
 interface BallProps {
   position: [number, number, number];
 }
@@ -13,18 +13,20 @@ export default function Ball({ position }: BallProps) {
   const ball = useLoader(GLTFLoader, "/models/ball.glb");
   const { setStats } = useStats();
 
-  const ballRef = useRef<any>(null);
+  const ballRef = useRef<RapierRigidBody | null>(null);
 
   const bounce = (event: React.MouseEvent) => {
     event.stopPropagation();
     if (ballRef.current) {
-      ballRef.current.wakeUp();
       const randomSign = () => (Math.random() < 0.5 ? -1 : 1);
-      ballRef.current.applyImpulse({
-        x: randomSign() * 0.005,
-        y: randomSign() * 0.005,
-        z: -0.005,
-      });
+      ballRef.current.applyImpulse(
+        {
+          x: randomSign() * 0.005,
+          y: randomSign() * 0.005,
+          z: -0.005,
+        },
+        true
+      );
 
       setStats((prevStats) => {
         return {
