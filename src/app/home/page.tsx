@@ -19,8 +19,8 @@ export default function Page() {
   const [isCleaning, setIsCleaning] = useState(false);
   const [lightSettings, setLightSettings] = useState({
     lightOn: true,
-    directional: 5,
-    ambient: 1.5,
+    directional: 1.25,
+    ambient: 1,
   });
 
   const toggleStatsClass = () => {
@@ -56,8 +56,8 @@ export default function Page() {
     setLightSettings((prev) => ({
       ...prev,
       lightOn: !prev.lightOn,
-      directional: prev.directional === 5 ? 0 : 5,
-      ambient: prev.ambient === 1.5 ? 0 : 1.5,
+      directional: prev.directional === 1.25 ? 0 : 1.25,
+      ambient: prev.ambient === 1 ? 0 : 1,
     }));
   };
 
