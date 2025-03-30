@@ -11,8 +11,9 @@
   width: 90%;
   max-width: 550px;
   text-align: center;
-  height: 60%;
-  max-height: 600px;
+  height: auto;
+  max-height: 90vh;
+
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -62,6 +63,7 @@
   margin: 0;
   max-width: 75%;
   text-align: left;
+  padding: 5px 0;
 }
 
 .button {
@@ -74,6 +76,7 @@
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 5px 0;
 }
 
 .button:hover {
@@ -84,4 +87,62 @@
 .button:active {
   background-color: #527846;
   transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    max-height: 80vh;
+  }
+
+  .container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+  }
+
+  .container > ul > li {
+    padding: 8px 0;
+  }
+
+  .button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 15px;
+    width: 95%;
+    max-height: 75vh;
+  }
+
+  .container h1 {
+    font-size: 1.5rem;
+  }
+
+  .container h2 {
+    font-size: 1.2rem;
+  }
+
+  .container > ul {
+    gap: 5px;
+  }
+
+  .container > ul > li {
+    padding: 6px 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .container > ul > li p {
+    font-size: 0.9rem;
+    max-width: 100%;
+    text-align: center;
+  }
 }
