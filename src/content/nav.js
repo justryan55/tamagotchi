@@ -1,3 +1,4 @@
+import styles from "@/styles/navItems.module.css";
 import WeatherData from "@/components/WeatherData";
 
 export const NavItems = [
@@ -6,8 +7,7 @@ export const NavItems = [
     text: "Feed",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         fill="none"
@@ -55,8 +55,7 @@ export const NavItems = [
     text: "Clean",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         fill="none"
@@ -86,8 +85,7 @@ export const NavItems = [
     text: "Play",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         fill="none"
@@ -116,85 +114,15 @@ export const NavItems = [
           strokeLinejoin="round"
         ></path>
       </svg>
-      // <svg
-      //   width="40px"
-      //   height="40px"
-      //   strokeWidth="1.5"
-      //   viewBox="0 0 24 24"
-      //   fill="none"
-      //   xmlns="http://www.w3.org/2000/svg"
-      //   color="#77767b"
-      //   aria-label="Walk"
-      // >
-      //   <path
-      //     d="M3.68478 18.7826L11.5642 4.77473C11.7554 4.43491 12.2446 4.43491 12.4358 4.77473L20.3152 18.7826C20.5454 19.1918 20.1357 19.6639 19.6982 19.4937L12.1812 16.5705C12.0647 16.5251 11.9353 16.5251 11.8188 16.5705L4.30179 19.4937C3.86426 19.6639 3.45463 19.1918 3.68478 18.7826Z"
-      //     stroke="#77767b"
-      //     strokeWidth="1.5"
-      //     strokeLinecap="round"
-      //     strokeLinejoin="round"
-      //   ></path>
-      // </svg>
     ),
   },
-  // {
-  //   id: 4,
-  //   text: "Care",
-  //   svg: (
-  //     <svg
-  //       width="40px"
-  //       height="40px"
-  //       strokeWidth="1.5"
-  //       viewBox="0 0 24 24"
-  //       fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       color="#f66151"
-  //       aria-label="Care"
-  //     >
-  //       <path
-  //         d="M18 20L21.8243 16.1757C21.9368 16.0632 22 15.9106 22 15.7515V10.5C22 9.67157 21.3284 9 20.5 9V9C19.6716 9 19 9.67157 19 10.5V15"
-  //         stroke="#f66151"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M18 16L18.8581 15.1419C18.949 15.051 19 14.9278 19 14.7994V14.7994C19 14.6159 18.8963 14.4482 18.7322 14.3661L18.2893 14.1447C17.5194 13.7597 16.5894 13.9106 15.9807 14.5193L15.0858 15.4142C14.7107 15.7893 14.5 16.298 14.5 16.8284V20"
-  //         stroke="#f66151"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M6 20L2.17574 16.1757C2.06321 16.0632 2 15.9106 2 15.7515V10.5C2 9.67157 2.67157 9 3.5 9V9C4.32843 9 5 9.67157 5 10.5V15"
-  //         stroke="#f66151"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M6 16L5.14187 15.1419C5.05103 15.051 5 14.9278 5 14.7994V14.7994C5 14.6159 5.10366 14.4482 5.26776 14.3661L5.71067 14.1447C6.48064 13.7597 7.41059 13.9106 8.01931 14.5193L8.91421 15.4142C9.28929 15.7893 9.5 16.298 9.5 16.8284V20"
-  //         stroke="#f66151"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M13.6667 12H10.3333V9.66667H8V6.33333H10.3333V4H13.6667V6.33333H16V9.66667H13.6667V12Z"
-  //         stroke="#f66151"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //     </svg>
-  //   ),
-  // },
+
   {
     id: 4,
     text: "Sleep",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         fill="none"
@@ -225,37 +153,6 @@ export const NavItems = [
       </svg>
     ),
   },
-  // {
-  //   id: 5,
-  //   text: "Settings",
-  //   svg: (
-  //     <svg
-  //       width="40px"
-  //       height="40px"
-  //       viewBox="0 0 24 24"
-  //       strokeWidth="1.5"
-  //       fill="none"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       color="#fff"
-  //       aria-label="Settings"
-  //     >
-  //       <path
-  //         d="M10.0503 10.6066L2.97923 17.6777C2.19818 18.4587 2.19818 19.725 2.97923 20.5061V20.5061C3.76027 21.2871 5.0266 21.2871 5.80765 20.5061L12.8787 13.435"
-  //         stroke="#fff"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //       <path
-  //         d="M10.0502 10.6066C9.20638 8.45358 9.37134 5.6286 11.1109 3.88909C12.8504 2.14957 16.0606 1.76777 17.8284 2.82843L14.7877 5.8691L14.5051 8.98014L17.6161 8.69753L20.6568 5.65685C21.7175 7.42462 21.3357 10.6349 19.5961 12.3744C17.8566 14.1139 15.0316 14.2789 12.8786 13.435"
-  //         stroke="#fff"
-  //         strokeWidth="1.5"
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //       ></path>
-  //     </svg>
-  //   ),
-  // },
 ];
 
 export const HeaderItems = [
@@ -264,8 +161,7 @@ export const HeaderItems = [
     text: "Stats",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         strokeWidth="1.5"
         viewBox="0 0 24 24"
         fill="none"
@@ -314,8 +210,7 @@ export const HeaderItems = [
     text: "Animate",
     svg: (
       <svg
-        width="40px"
-        height="40px"
+        className={styles.icon}
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -331,31 +226,6 @@ export const HeaderItems = [
           strokeLinejoin="round"
         ></path>
       </svg>
-      // <svg
-      //   width="40px"
-      //   height="40px"
-      //   viewBox="0 0 24 24"
-      //   strokeWidth="1.5"
-      //   fill="none"
-      //   xmlns="http://www.w3.org/2000/svg"
-      //   color="#9a9996"
-      //   aria-label="Settings"
-      // >
-      //   <path
-      //     d="M10.0503 10.6066L2.97923 17.6777C2.19818 18.4587 2.19818 19.725 2.97923 20.5061V20.5061C3.76027 21.2871 5.0266 21.2871 5.80765 20.5061L12.8787 13.435"
-      //     stroke="#9a9996"
-      //     strokeWidth="1.5"
-      //     strokeLinecap="round"
-      //     strokeLinejoin="round"
-      //   ></path>
-      //   <path
-      //     d="M10.0502 10.6066C9.20638 8.45358 9.37134 5.6286 11.1109 3.88909C12.8504 2.14957 16.0606 1.76777 17.8284 2.82843L14.7877 5.8691L14.5051 8.98014L17.6161 8.69753L20.6568 5.65685C21.7175 7.42462 21.3357 10.6349 19.5961 12.3744C17.8566 14.1139 15.0316 14.2789 12.8786 13.435"
-      //     stroke="#9a9996"
-      //     strokeWidth="1.5"
-      //     strokeLinecap="round"
-      //     strokeLinejoin="round"
-      //   ></path>
-      // </svg>
     ),
   },
 ];
