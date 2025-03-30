@@ -26,7 +26,6 @@ export default function Poo({ position }: PooProps) {
       worldPosition.z > -1.25 &&
       worldPosition.z < -0.75
     ) {
-      console.log(stats.hygiene.pooPosition);
       const updatedPooPosition = stats.hygiene.pooPosition.filter((poo) => {
         const [x, , z] = poo.position;
         return !(
