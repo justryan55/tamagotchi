@@ -55,6 +55,14 @@ export default function Poo({ position }: PooProps) {
     }
   };
 
+  const handlePointerOver = () => {
+    document.body.style.cursor = "pointer";
+  };
+
+  const handlePointerOut = () => {
+    document.body.style.cursor = "auto";
+  };
+
   return (
     <DragControls autoTransform={true} axisLock="y" onDragEnd={handleDragEnd}>
       <Clone
@@ -62,6 +70,8 @@ export default function Poo({ position }: PooProps) {
         scale={[0.1, 0.1, 0.1]}
         position={position}
         ref={pooRef}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
       />
     </DragControls>
   );

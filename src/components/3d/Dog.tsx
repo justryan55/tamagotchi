@@ -85,6 +85,15 @@ export default function Dog({
     });
   };
 
+  const handlePointerOver = () => {
+    if (!isCleaning) return;
+    document.body.style.cursor = "pointer";
+  };
+
+  const handlePointerOut = () => {
+    document.body.style.cursor = "auto";
+  };
+
   useEffect(() => {
     const action = dogAnimations.actions[animation];
     action?.reset().fadeIn(0.5).play();
@@ -108,6 +117,8 @@ export default function Dog({
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
         />
         {isCleaning && (
           <primitive object={bubbles.scene} scale={[0.002, 0.002, 0.002]} />

@@ -7,7 +7,7 @@ export default function Lamp() {
   const lamp = useLoader(GLTFLoader, "/models/cactus-lamp.glb");
   const [lightSettings, setLightSettings] = useState({
     lightOn: true,
-    intensity: 1.25,
+    intensity: 0.75,
   });
 
   const lampRef = useRef<Group | null>(null);
@@ -32,6 +32,14 @@ export default function Lamp() {
     );
   });
 
+  const handlePointerOver = () => {
+    document.body.style.cursor = "pointer";
+  };
+
+  const handlePointerOut = () => {
+    document.body.style.cursor = "auto";
+  };
+
   return (
     <>
       <primitive
@@ -41,6 +49,8 @@ export default function Lamp() {
         position={[-1.75, 0.75, -0.25]}
         rotation={[0, Math.PI * 0.5, 0]}
         onClick={handleClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
       />
       <pointLight
         ref={lightRef}

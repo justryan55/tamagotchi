@@ -48,6 +48,14 @@ export default function Ball({ position }: BallProps) {
     }
   };
 
+  const handlePointerOver = () => {
+    document.body.style.cursor = "pointer";
+  };
+
+  const handlePointerOut = () => {
+    document.body.style.cursor = "auto";
+  };
+
   return (
     <RigidBody
       colliders="ball"
@@ -56,11 +64,15 @@ export default function Ball({ position }: BallProps) {
       angularDamping={0.5}
       ref={ballRef}
       canSleep={false}
-      // position={[0.9, 1, -0.65]}
       position={position}
     >
-      {/* <primitive object={ball.scene} onClick={bounce} /> */}
-      <Clone object={ball.scene} onClick={bounce} castShadow />
+      <Clone
+        object={ball.scene}
+        onClick={bounce}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+        castShadow
+      />
     </RigidBody>
   );
 }
