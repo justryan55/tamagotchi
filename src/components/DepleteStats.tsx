@@ -53,7 +53,7 @@ export default function DepleteStats({ lightOn }: { lightOn: boolean }) {
         const energyLoss = Math.abs(newHealth - newHunger) / 2;
         const newEnergy = Math.max(0, prevStats.energy.value - energyLoss);
 
-        return {
+        const newStats = {
           ...prevStats,
           hunger: { ...prevStats.hunger, value: newHunger },
           happiness: { ...prevStats.happiness, value: newHappiness },
@@ -61,17 +61,16 @@ export default function DepleteStats({ lightOn }: { lightOn: boolean }) {
           energy: { ...prevStats.energy, value: newEnergy },
           hygiene: { ...prevStats.hygiene, value: newHygiene },
         };
-      });
 
-      if (localStorage !== undefined) {
-        localStorage.setItem("stats", JSON.stringify(stats));
-      }
+        localStorage.setItem("stats", JSON.stringify(newStats));
+        return newStats;
+      });
     }, getIntervalTime());
 
     return () => {
       clearInterval(interval);
     };
-  }, [lightOn, setStats, stats]);
+  }, [lightOn, setStats]);
 
   useEffect(() => {
     if (!user) return;
@@ -80,13 +79,16 @@ export default function DepleteStats({ lightOn }: { lightOn: boolean }) {
     const depletionRate = elapsedTime / 2;
 
     setUser((prevUser) => {
+      if (prevUser.lastLogonTime === Date.now()) {
+        return prevUser;
+      }
+
       const updatedUser = {
         ...prevUser,
         lastLogonTime: Date.now(),
       };
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
-
       return updatedUser;
     });
 
@@ -118,15 +120,12 @@ export default function DepleteStats({ lightOn }: { lightOn: boolean }) {
       localStorage.setItem("stats", JSON.stringify(updatedStats));
       return updatedStats;
     });
-    if (localStorage !== undefined) {
-      localStorage.setItem("user", JSON.stringify(user));
-    }
 
     localStorage.setItem(
       "user",
       JSON.stringify({ ...user, lastLogonTime: Date.now() })
     );
-  }, [user, setStats, setUser]);
+  }, [setStats, setUser]);
 
   return null;
 }
