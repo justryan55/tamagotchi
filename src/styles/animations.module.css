@@ -43,3 +43,23 @@
 .item + .item {
   border-top: none;
 }
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    top: 100px;
+    right: 0;
+    width: 100%;
+    padding-right: 10px;
+    gap: 10px;
+  }
+
+  .item {
+    width: calc(50% - 20px);
+    height: 45px;
+    font-size: 16px;
+    text-align: center;
+  }
+}
