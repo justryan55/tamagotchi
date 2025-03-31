@@ -13,7 +13,6 @@
   padding: 1.25rem 0;
   margin: 0;
   background-color: rgba(59, 59, 59, 0.432);
-  pointer-events: none;
 }
 
 .nav-item {
@@ -35,5 +34,4 @@
   height: 100%;
   padding: 2rem 1rem;
   margin: 0;
-  pointer-events: none;
 }
