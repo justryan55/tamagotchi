@@ -26,7 +26,7 @@ export default function Whiteboard({ content, fontSize }: TextState) {
           color="black"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/Marker-Regular.otf"
+          font="/fonts/DryWhiteboardMarker-Regular.ttf"
         >
           {content}
         </Text>

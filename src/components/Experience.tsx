@@ -127,7 +127,7 @@ export default function Experience({
         return {
           ...prevText,
           content: `  Click on the dog\n and move to clean.`,
-          fontSize: 42,
+          fontSize: 35.5,
         };
       });
     } else {
