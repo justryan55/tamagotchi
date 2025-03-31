@@ -1,12 +1,29 @@
 import styles from "@/styles/stats.module.css";
 import { useStats } from "@/providers/StatsProvider";
+import { useEffect } from "react";
 
 interface StatsProps {
   toggleStats: boolean;
+  setToggleStats: (newState: boolean) => void;
 }
 
-export default function Stats({ toggleStats }: StatsProps) {
+export default function Stats({ toggleStats, setToggleStats }: StatsProps) {
   const { stats } = useStats();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setToggleStats(window.innerWidth > 1496);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setToggleStats]);
+
   return (
     <div className={`${styles.container} ${toggleStats ? "" : styles.hidden}`}>
       <ul>

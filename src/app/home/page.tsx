@@ -83,7 +83,7 @@ export default function Page() {
       {isFirstVisit && <WelcomeScreen setIsFirstVisit={setIsFirstVisit} />}
       <CheckStats setSpawnPoo={setSpawnPoo} isCleaning={isCleaning} />
       <DepleteStats lightOn={lightSettings.lightOn} />
-      <Stats toggleStats={toggleStats} />
+      <Stats toggleStats={toggleStats} setToggleStats={setToggleStats} />
       {toggleAnimations && <AnimationList toggleAnimation={toggleAnimation} />}
       <div className={styles.canvas}>
         <Experience

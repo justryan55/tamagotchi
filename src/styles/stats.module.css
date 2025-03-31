@@ -12,6 +12,12 @@
   width: 75vw;
 }
 
+@media (min-width: 1496px) {
+  .container {
+    width: 25vw;
+  }
+}
+
 .hidden {
   opacity: 0;
   pointer-events: none;
